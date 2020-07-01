@@ -1,0 +1,12 @@
+#chart-component {
+	height: 95vh;
+	width: 60%;
+	border: 1px solid green;
+
+	margin: 10px 5px 5px 5px;
+	padding-left: 20px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}

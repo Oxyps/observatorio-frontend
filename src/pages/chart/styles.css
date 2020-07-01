@@ -1,0 +1,25 @@
+#chart-page {
+    /* max-width: 1200px; */
+    /* margin: 0 auto; */
+    /* padding: 60px 30px; */
+
+    display: flex;
+    flex-direction: row;
+	align-items: center;
+}
+
+@media (max-width: 1000px) {
+    #chart-page {
+		flex-direction: column;
+		width: 100vh;
+    }
+
+    /* #app main {
+        margin-left: 0;
+        margin-top: 30px;
+    }
+
+    #app aside {
+        width: 100%;
+    } */
+}
