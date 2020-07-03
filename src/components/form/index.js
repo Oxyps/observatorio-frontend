@@ -75,7 +75,7 @@ export default class FormComponent extends Component {
 				</Form.Group>
 
 				<Form.Group as={Row} controlId="location">
-					<Form.Label column md={4}>Informação:</Form.Label>
+					<Form.Label column md={4}>Localização:</Form.Label>
 
 					<Col md={8}>
 						<Form.Control

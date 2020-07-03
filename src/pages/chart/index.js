@@ -16,20 +16,25 @@ export default class Chart extends Component {
 		super(props);
 
 		this.state = {
-			formData: {
-				informations: [],
-				locations: [],
-				granularities: [],
-				loaded: false
+			form: {
+				loaded: false,
+				data: {
+					informations: [],
+					locations: [],
+					granularities: []
+				}
 			},
-			chartData: {
-				labels: ['Boston', 'Springfield', 'Cambridge', 'Bosto', 'Springfiel', 'Cambridg'],
-				datasets: [
-					{
-						label: 'Population',
-						data: [10, 20, 30, 40, 50, 60]
-					}
-				]
+			chart: {
+				title: '',
+				data: {
+					labels: [],
+					datasets: [
+						{
+							label: '',
+							data: []
+						}
+					]
+				}
 			}
 		};
 	}
@@ -41,13 +46,15 @@ export default class Chart extends Component {
 				api.get('/chart/location'),
 				api.get('/chart/granularity')
 			])
-			.then(axios.spread( (...responses) => {
+			.then(axios.spread( (infRes, locRes, granRes) => {
 				this.setState({
-					formData: {
-						informations: responses[0].data,
-						locations: responses[1].data,
-						granularities: responses[2].data,
-						loaded: true
+					form: {
+						loaded: true,
+						data: {
+							informations: infRes.data,
+							locations: locRes.data,
+							granularities: granRes.data
+						}
 					}
 				});
 			}))
@@ -61,24 +68,48 @@ export default class Chart extends Component {
 		this.loadFormData();
 	}
 
-	handleGetChartData = async data => {
-		console.log(data);
+	handleGetChartData = async params => {
+		const pluck = (key, array) =>
+		array.reduce((values, current) => {
+			values.push(current[key]);
+
+			return values;
+		}, []);
+
+		const response = await api.get(`/chart/data/?information_nickname=${params.information}&location_name=${params.location}&granularity=${params.granularity}&in_date_gt=${params.inDate}&until_date_lte=${params.untilDate}`);
+
+		const untilDates = pluck('until_date', response.data);
+		const data = pluck('data', response.data);
+
+		const chart = {
+			title: params.information,
+			data: {
+				labels: untilDates,
+				datasets: [
+					{
+						label: params.location,
+						data
+					}
+				]
+			}
+		}
+
+		this.setState({ chart });
 	}
 
 	render() {
-		const { formData } = this.state;
-		const { chartData } = this.state;
+		const { form, chart } = this.state;
 
 		return(
 			<Container fluid>
 			{
-				(formData.loaded &&
+				(form.loaded &&
 				<Row>
 					<Col md={4} xs={4} lg={4}>
-						<FormComponent onSubmit={this.handleGetChartData} formData={formData} />
+						<FormComponent onSubmit={this.handleGetChartData} formData={form.data} />
 					</Col>
 					<Col md={8} xs={8} lg={8}>
-						<ChartComponent chartData={chartData} />
+						<ChartComponent chart={chart} />
 					</Col>
 				</Row>)
 				||

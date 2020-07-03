@@ -15,14 +15,14 @@ export default class ChartComponent extends Component {
 				<Tabs defaultActiveKey="line" unmountOnExit={true} mountOnEnter={true} id="chart-tabs">
 					<Tab eventKey="line" title="Linhas">
 						<Line
-							data={this.props.chartData}
+							data={this.props.chart.data}
 							height={500}
 							width={0}
 							options={{
 								maintainAspectRatio: false,
 								title: {
 									display: true,
-									text: 'Titulo',
+									text: this.props.chart.title,
 									fontSize: 25
 								},
 								legend: {
@@ -48,14 +48,14 @@ export default class ChartComponent extends Component {
 					</Tab>
 					<Tab eventKey="bars" title="Barras">
 						<Bar
-							data={this.props.chartData}
+							data={this.props.chart.data}
 							height={500}
 							width={0}
 							options={{
 								maintainAspectRatio: false,
 								title: {
 									display: true,
-									text: 'Titulo',
+									text: this.props.chart.title,
 									fontSize: 25
 								},
 								legend: {
