@@ -2,18 +2,25 @@ import React, { Component } from 'react';
 
 import { Bar, Line } from 'react-chartjs-2';
 
-import Container from 'react-bootstrap/Container';
-import Tabs from 'react-bootstrap/Tabs';
-import Tab from 'react-bootstrap/Tab';
+// import './styles.css';
 
 export default class ChartComponent extends Component {
 	render() {
 		return(
-			<Container>
+			<>
 				<h1>Chart Component</h1>
 
-				<Tabs defaultActiveKey="line" unmountOnExit={true} mountOnEnter={true} id="chart-tabs">
-					<Tab eventKey="line" title="Linhas">
+				<nav>
+					<div id="chart-tabs" className="nav nav-tabs" role="tablist">
+						<a id="line-chart-tab" className="nav-item nav-link" data-toggle="tab" href="#line-chart" role="tab" aria-controls="line-chart" aria-selected="true">Linha</a>
+						<a id="bar-chart-tab" className="nav-item nav-link" data-toggle="tab" href="#bar-chart" role="tab" aria-controls="bar-chart" aria-selected="false">Barra</a>
+
+						<a id="pie-chart-tab" className="nav-item nav-link disabled" data-toggle="tab" href="#pie-chart" role="tab" aria-controls="pie-chart" aria-selected="false">Pizza</a>
+					</div>
+				</nav>
+
+				<div id="chart-tabs-content" className="tab-content">
+					<div id="line-chart" className="tab-pane fade show active" role="tabpanel" aria-labelledby="line-chart-tab">
 						<Line
 							data={this.props.chart.data}
 							height={500}
@@ -45,8 +52,8 @@ export default class ChartComponent extends Component {
 								}
 							}}
 						/>
-					</Tab>
-					<Tab eventKey="bars" title="Barras">
+					</div>
+					<div id="bar-chart" className="tab-pane fade show active" role="tabpanel" aria-labelledby="bar-chart-tab">
 						<Bar
 							data={this.props.chart.data}
 							height={500}
@@ -78,12 +85,12 @@ export default class ChartComponent extends Component {
 								}
 							}}
 						/>
-					</Tab>
-					<Tab eventKey="pie" title="Pizza" disabled>
+					</div>
+					<div id="pie-chart" className="tab-pane fade show active" role="tabpanel" aria-labelledby="pie-chart-tab">
 
-					</Tab>
-				</Tabs>
-			</Container>
+					</div>
+				</div>
+			</>
 		);
 	}
 }

@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 
-// import './styles.css';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+
+// import './styles.css';
 
 export default class FormComponent extends Component {
 	constructor(props) {
@@ -52,108 +48,93 @@ export default class FormComponent extends Component {
 		const { granularities } = this.props.formData;
 
 		return(
-			<Form onSubmit={this.handleSubmit}>
+			<form onSubmit={this.handleSubmit}>
 				<h1>Form Component</h1>
 
-				<Form.Group as={Row} controlId="information">
-					<Form.Label column md={4}>Informação:</Form.Label>
+				<div id="information">
+					<label for="information">Informação:</label>
 
-					<Col md={8}>
-						<Form.Control
-							as="select"
-							onChange={ e => this.setState({ information: e.target.value }) }
-						>
-							<option value="">------</option>
-							{informations.map(information =>
-								<option
-									key={information.id}
-									value={information.nickname}
-								>{information.nickname}</option>
-							)}
-						</Form.Control>
-					</Col>
-				</Form.Group>
+					<select
+						onChange={ e => this.setState({ information: e.target.value }) }
+					>
+						<option value="">------</option>
+						{informations.map(information =>
+							<option
+								key={information.id}
+								value={information.nickname}
+							>{information.nickname}</option>
+						)}
+					</select>
+				</div>
 
-				<Form.Group as={Row} controlId="location">
-					<Form.Label column md={4}>Localização:</Form.Label>
+				<div id="location">
+					<label for="location">Localização:</label>
 
-					<Col md={8}>
-						<Form.Control
-							as="select"
-							onChange={ e => this.setState({ location: e.target.value }) }
-						>
-							<option value="">------</option>
-							{locations.map(location =>
-								<option
-									key={location.id_ibge}
-									value={location.name}
-								>{location.name}</option>
-							)}
-						</Form.Control>
-					</Col>
-				</Form.Group>
+					<select
+						onChange={ e => this.setState({ location: e.target.value }) }
+					>
+						<option value="">------</option>
+						{locations.map(location =>
+							<option
+								key={location.id_ibge}
+								value={location.name}
+							>{location.name}</option>
+						)}
+					</select>
+				</div>
 
-				<Form.Group as={Row} controlId="granularity">
-					<Form.Label column md={4}>Granularidade:</Form.Label>
+				<div id="granularity">
+					<label for="granularity">Granularidade:</label>
 
-					<Col md={8}>
-						<Form.Control
-							as="select"
-							onChange={ e => this.setState({ granularity: e.target.value }) }
-						>
-							<option value="">------</option>
-							{granularities.map(granularity =>
-								<option
-									key={granularity.id}
-									value={granularity.granularity}
-								>{granularity.granularity}</option>
-							)}
-						</Form.Control>
-					</Col>
-				</Form.Group>
+					<select
+						onChange={ e => this.setState({ granularity: e.target.value }) }
+					>
+						<option value="">------</option>
+						{granularities.map(granularity =>
+							<option
+								key={granularity.id}
+								value={granularity.granularity}
+							>{granularity.granularity}</option>
+						)}
+					</select>
+				</div>
 
-				<Form.Group as={Row} controlId="in-date">
-					<Form.Label column md={4}>Data inicial:</Form.Label>
+				<div id="in-date">
+					<label for="in-date">Data inicial:</label>
 
-					<Col md={8}>
-						<DatePicker
-							selected={this.state.inDate}
-							onChange={ date => this.setState({ inDate: date }) }
-							peekNextMonth
-							showMonthDropdown
-							showYearDropdown
-							dropdownMode="select"
-							className="form-control"
-							dateFormat="dd/MM/yyyy"
-							// locale="pt-BR"
-						/>
-					</Col>
-				</Form.Group>
+					{/* adicionar id pro for */}
+					<DatePicker
+						selected={this.state.inDate}
+						onChange={ date => this.setState({ inDate: date }) }
+						peekNextMonth
+						showMonthDropdown
+						showYearDropdown
+						dropdownMode="select"
+						className="form-control"
+						dateFormat="dd/MM/yyyy"
+						// locale="pt-BR"
+					/>
+				</div>
 
-				<Form.Group as={Row} controlId="until-date">
-					<Form.Label column md={4}>Data final:</Form.Label>
+				<div id="until-date">
+					<label for="until-date">Data final:</label>
 
-					<Col md={8}>
-						<DatePicker
-							selected={this.state.untilDate}
-							onChange={ date => this.setState({ untilDate: date }) }
-							peekNextMonth
-							showMonthDropdown
-							showYearDropdown
-							dropdownMode="select"
-							className="form-control"
-							dateFormat="dd/MM/yyyy"
-							// locale="pt-BR"
-						/>
-					</Col>
-				</Form.Group>
+					{/* adicionar id pro for */}
+					<DatePicker
+						selected={this.state.untilDate}
+						onChange={ date => this.setState({ untilDate: date }) }
+						peekNextMonth
+						showMonthDropdown
+						showYearDropdown
+						dropdownMode="select"
+						className="form-control"
+						dateFormat="dd/MM/yyyy"
+						// locale="pt-BR"
+					/>
+				</div>
 
-				<Row>
-					<Col>
-						<Button type="submit">Mostrar gráfico</Button>
-					</Col>
-				</Row>
-			</Form>
+				<input type="submit" />
+			</form>
 		);
 	}
 }

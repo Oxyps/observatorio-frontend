@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import FormComponent from '../../components/form';
 import ChartComponent from '../../components/chart';
 
-import axios from 'axios';
 import api from '../../services/api';
 
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Spinner from 'react-bootstrap/Spinner';
+// import './styles.css';
 
 export default class Chart extends Component {
 	constructor(props) {
@@ -59,7 +56,7 @@ export default class Chart extends Component {
 				});
 			}))
 			.catch(errors => {
-				console.log(errors);
+				// console.log(errors);
 			})
 		;
 	}
@@ -101,25 +98,15 @@ export default class Chart extends Component {
 		const { form, chart } = this.state;
 
 		return(
-			<Container fluid>
-			{
-				(form.loaded &&
-				<Row>
-					<Col md={4} xs={4} lg={4}>
-						<FormComponent onSubmit={this.handleGetChartData} formData={form.data} />
-					</Col>
-					<Col md={8} xs={8} lg={8}>
-						<ChartComponent chart={chart} />
-					</Col>
-				</Row>)
-				||
-				<Row>
-					<Col md={{offset: 6}}>
-						<Spinner animation="grow"/>
-					</Col>
-				</Row>
-			}
-			</Container>
+			<>
+			{/* { */}
+				{/* (form.loaded && */}
+					<FormComponent onSubmit={this.handleGetChartData} formData={form.data} />
+					<ChartComponent chart={chart} />
+				{/* ) */}
+				{/* || */}
+			{/* } */}
+			</>
 		);
 	}
 }
