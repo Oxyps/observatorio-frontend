@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 
-import DatePicker from 'react-datepicker';
+import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+
+import ptBR from 'date-fns/locale/pt-BR';
+registerLocale('pt_BR', ptBR);
 
 // import './styles.css';
 
@@ -46,8 +49,6 @@ export default class FormComponent extends Component {
 		const { informations } = this.props.formData;
 		const { locations } = this.props.formData;
 		const { granularities } = this.props.formData;
-
-		// console.log(informationOptions);
 
 		return(
 			<form className="d-flex flex-column" onSubmit={this.handleSubmit}>
@@ -117,7 +118,6 @@ export default class FormComponent extends Component {
 					<label htmlFor="in-date" className="col-sm-3 col-form-label">Data de:</label>
 
 					<div className="col-sm-9">
-						{/* adicionar id pro for */}
 						<DatePicker
 							selected={this.state.inDate}
 							onChange={ date => this.setState({ inDate: date }) }
@@ -127,7 +127,7 @@ export default class FormComponent extends Component {
 							dropdownMode="select"
 							className="form-control"
 							dateFormat="dd/MM/yyyy"
-							// locale="pt-BR"
+							locale="pt_BR"
 						/>
 					</div>
 				</div>
@@ -136,8 +136,8 @@ export default class FormComponent extends Component {
 					<label htmlFor="until-date" className="col-sm-3 col-form-label">Data até:</label>
 
 					<div className="col-sm-9">
-						{/* adicionar id pro for */}
 						<DatePicker
+
 							selected={this.state.untilDate}
 							onChange={ date => this.setState({ untilDate: date }) }
 							peekNextMonth
@@ -146,7 +146,7 @@ export default class FormComponent extends Component {
 							dropdownMode="select"
 							className="form-control"
 							dateFormat="dd/MM/yyyy"
-							// locale="pt-BR"
+							locale="pt_BR"
 						/>
 					</div>
 				</div>
