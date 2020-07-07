@@ -22,13 +22,13 @@ export default class Chart extends Component {
 				}
 			},
 			chart: {
-				title: '',
+				title: 'teste',
 				data: {
-					labels: [],
+					labels: ['a','b', 'c'],
 					datasets: [
 						{
-							label: '',
-							data: []
+							label: 'abc',
+							data: [1, 2, 3]
 						}
 					]
 				}
@@ -101,8 +101,24 @@ export default class Chart extends Component {
 			<>
 			{/* { */}
 				{/* (form.loaded && */}
-					<FormComponent onSubmit={this.handleGetChartData} formData={form.data} />
-					<ChartComponent chart={chart} />
+				<div className="container-fluid d-flex flex-column align-items-center justify-items-center">
+					<div className="d-flex flex-row container-fluid">
+						<div className="container-fluid col-4">
+							<h1>Form Component</h1>
+						</div>
+						<div className="container-fluid col-8">
+							<h1>Chart Component</h1>
+						</div>
+					</div>
+					<div className="d-flex flex-row">
+						<div className="container-fluid col-sm-4">
+							<FormComponent onSubmit={this.handleGetChartData} formData={form.data} />
+						</div>
+						<div className="container-fluid d-flex flex-column col-sm-8">
+							<ChartComponent chart={chart} />
+						</div>
+					</div>
+				</div>
 				{/* ) */}
 				{/* || */}
 			{/* } */}

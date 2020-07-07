@@ -1,92 +1,60 @@
 import React, { Component } from 'react';
 
-import { Bar, Line } from 'react-chartjs-2';
+import MyChart from './MyChart';
+// import { Line, Bar } from 'react-chartjs-2';
 
 // import './styles.css';
 
 export default class ChartComponent extends Component {
 	render() {
+		const options = {
+			scales: {
+				yAxes: [
+					{
+						ticks: {
+							min: 0,
+							max: 100
+						}
+					}
+				]
+			}
+		};
+
 		return(
 			<>
-				<h1>Chart Component</h1>
-
-				<nav>
-					<div id="chart-tabs" className="nav nav-tabs" role="tablist">
-						<a id="line-chart-tab" className="nav-item nav-link" data-toggle="tab" href="#line-chart" role="tab" aria-controls="line-chart" aria-selected="true">Linha</a>
-						<a id="bar-chart-tab" className="nav-item nav-link" data-toggle="tab" href="#bar-chart" role="tab" aria-controls="bar-chart" aria-selected="false">Barra</a>
-
-						<a id="pie-chart-tab" className="nav-item nav-link disabled" data-toggle="tab" href="#pie-chart" role="tab" aria-controls="pie-chart" aria-selected="false">Pizza</a>
-					</div>
-				</nav>
+				<ul id="chart-tabs" className="nav nav-tabs" role="tablist">
+					<li className="nav-item">
+						<a id="line-chart-tab" className="nav-link active" data-toggle="tab" href="#line-chart" role="tab" aria-controls="line-chart" aria-selected="true">Linha</a>
+					</li>
+					<li className="nav-item">
+						<a id="bar-chart-tab" className="nav-link" data-toggle="tab" href="#bar-chart" role="tab" aria-controls="bar-chart" aria-selected="false">Barra</a>
+					</li>
+					<li className="nav-item">
+						<a id="pie-chart-tab" className="nav-link disabled" data-toggle="tab" href="#pie-chart" role="tab" aria-controls="pie-chart" aria-selected="false">Pizza</a>
+					</li>
+				</ul>
 
 				<div id="chart-tabs-content" className="tab-content">
 					<div id="line-chart" className="tab-pane fade show active" role="tabpanel" aria-labelledby="line-chart-tab">
-						<Line
+						<MyChart
 							data={this.props.chart.data}
-							height={500}
-							width={0}
-							options={{
-								maintainAspectRatio: false,
-								title: {
-									display: true,
-									text: this.props.chart.title,
-									fontSize: 25
-								},
-								legend: {
-									display: true,
-									position: 'right',
-									labels: {
-										fontColor: '#000'
-									}
-								},
-								layout: {
-									padding: {
-										left: 50,
-										right: 0,
-										bottom: 0,
-										top: 0
-									}
-								},
-								tooltips: {
-									enabled: true
-								}
-							}}
+							title={this.props.chart.title}
+							type='line'
+							options={options}
+							color="#70CA"
 						/>
 					</div>
-					<div id="bar-chart" className="tab-pane fade show active" role="tabpanel" aria-labelledby="bar-chart-tab">
-						<Bar
+					<div id="bar-chart" className="tab-pane fade" role="tabpanel" aria-labelledby="bar-chart-tab">
+						<MyChart
 							data={this.props.chart.data}
-							height={500}
-							width={0}
-							options={{
-								maintainAspectRatio: false,
-								title: {
-									display: true,
-									text: this.props.chart.title,
-									fontSize: 25
-								},
-								legend: {
-									display: true,
-									position: 'right',
-									labels: {
-										fontColor: '#000'
-									}
-								},
-								layout: {
-									padding: {
-										left: 50,
-										right: 0,
-										bottom: 0,
-										top: 0
-									}
-								},
-								tooltips: {
-									enabled: true
-								}
-							}}
+							title={this.props.chart.title}
+							type='bar'
+							options={options}
+							color="#70CA"
 						/>
 					</div>
-					<div id="pie-chart" className="tab-pane fade show active" role="tabpanel" aria-labelledby="pie-chart-tab">
+
+					<div id="pie-chart" className="tab-pane fade" role="tabpanel" aria-labelledby="pie-chart-tab">
 
 					</div>
 				</div>

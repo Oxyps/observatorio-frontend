@@ -47,93 +47,115 @@ export default class FormComponent extends Component {
 		const { locations } = this.props.formData;
 		const { granularities } = this.props.formData;
 
+		// console.log(informationOptions);
+
 		return(
-			<form onSubmit={this.handleSubmit}>
-				<h1>Form Component</h1>
+			<form className="d-flex flex-column" onSubmit={this.handleSubmit}>
+				<div id="information" className="form-group row">
+					<label htmlFor="information" className="col-sm-3 col-form-label">Informação:</label>
 
-				<div id="information">
-					<label for="information">Informação:</label>
-
-					<select
-						onChange={ e => this.setState({ information: e.target.value }) }
-					>
-						<option value="">------</option>
-						{informations.map(information =>
-							<option
-								key={information.id}
-								value={information.nickname}
-							>{information.nickname}</option>
-						)}
-					</select>
+					<div className="col-sm-9">
+						<select
+							id="information"
+							className="custom-select"
+							// value="0"
+							onChange={ e => this.setState({ information: e.target.value }) }
+						>
+							<option value="0">Selecione</option>
+							{informations.map(information => {
+								return(
+									<option
+										key={information.id}
+										value={information.nickname}
+									>{information.nickname}</option>
+								)
+							}
+							)}
+						</select>
+					</div>
 				</div>
 
-				<div id="location">
-					<label for="location">Localização:</label>
+				<div id="location" className="form-group row">
+					<label htmlFor="location" className="col-sm-3 col-form-label">Localização:</label>
 
-					<select
-						onChange={ e => this.setState({ location: e.target.value }) }
-					>
-						<option value="">------</option>
-						{locations.map(location =>
-							<option
-								key={location.id_ibge}
-								value={location.name}
-							>{location.name}</option>
-						)}
-					</select>
+					<div className="col-sm-9">
+						<select
+							id="location"
+							className="custom-select"
+							onChange={ e => this.setState({ location: e.target.value }) }
+						>
+							{locations.map(location =>
+								<option
+									key={location.id_ibge}
+									value={location.nickname}
+								>{location.name}</option>
+							)}
+						</select>
+					</div>
 				</div>
 
-				<div id="granularity">
-					<label for="granularity">Granularidade:</label>
+				<div id="granularity" className="form-group row">
+					<label htmlFor="granularity" className="col-sm-3 col-form-label">Granularidade:</label>
 
-					<select
-						onChange={ e => this.setState({ granularity: e.target.value }) }
-					>
-						<option value="">------</option>
-						{granularities.map(granularity =>
-							<option
-								key={granularity.id}
-								value={granularity.granularity}
-							>{granularity.granularity}</option>
-						)}
-					</select>
+					<div className="col-sm-9">
+						<select
+							id="granularity"
+							className="custom-select"
+							onChange={ e => this.setState({ granularity: e.target.value }) }
+						>
+							{granularities.map(granularity =>
+								<option
+									key={granularity.id}
+									value={granularity.granularity}
+								>{granularity.granularity}</option>
+							)}
+						</select>
+					</div>
 				</div>
 
-				<div id="in-date">
-					<label for="in-date">Data inicial:</label>
+				<div id="in-date" className="form-group row">
+					<label htmlFor="in-date" className="col-sm-3 col-form-label">Data de:</label>
 
-					{/* adicionar id pro for */}
-					<DatePicker
-						selected={this.state.inDate}
-						onChange={ date => this.setState({ inDate: date }) }
-						peekNextMonth
-						showMonthDropdown
-						showYearDropdown
-						dropdownMode="select"
-						className="form-control"
-						dateFormat="dd/MM/yyyy"
-						// locale="pt-BR"
-					/>
+					<div className="col-sm-9">
+						{/* adicionar id pro for */}
+						<DatePicker
+							selected={this.state.inDate}
+							onChange={ date => this.setState({ inDate: date }) }
+							peekNextMonth
+							showMonthDropdown
+							showYearDropdown
+							dropdownMode="select"
+							className="form-control"
+							dateFormat="dd/MM/yyyy"
+							// locale="pt-BR"
+						/>
+					</div>
 				</div>
 
-				<div id="until-date">
-					<label for="until-date">Data final:</label>
+				<div id="until-date" className="form-group row">
+					<label htmlFor="until-date" className="col-sm-3 col-form-label">Data até:</label>
 
-					{/* adicionar id pro for */}
-					<DatePicker
-						selected={this.state.untilDate}
-						onChange={ date => this.setState({ untilDate: date }) }
-						peekNextMonth
-						showMonthDropdown
-						showYearDropdown
-						dropdownMode="select"
-						className="form-control"
-						dateFormat="dd/MM/yyyy"
-						// locale="pt-BR"
-					/>
+					<div className="col-sm-9">
+						{/* adicionar id pro for */}
+						<DatePicker
+							selected={this.state.untilDate}
+							onChange={ date => this.setState({ untilDate: date }) }
+							peekNextMonth
+							showMonthDropdown
+							showYearDropdown
+							dropdownMode="select"
+							className="form-control"
+							dateFormat="dd/MM/yyyy"
+							// locale="pt-BR"
+						/>
+					</div>
 				</div>
 
-				<input type="submit" />
+				<div className="row justify-content-center pt-3">
+					<div className="col-6">
+						<input className="btn btn-secondary btn-block" type="submit" />
+					</div>
+				</div>
 			</form>
 		);
 	}
