@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import { GithubPicker } from 'react-color';
+
 import ptBR from 'date-fns/locale/pt-BR';
 registerLocale('pt_BR', ptBR);
 
@@ -19,7 +21,8 @@ export default function FormComponent({ formData, onSubmit }) {
 			location,
 			granularity,
 			inDate,
-			untilDate
+			untilDate,
+			color
 		} = form;
 
 		// yyyy-mm-dd format dates
@@ -34,7 +37,8 @@ export default function FormComponent({ formData, onSubmit }) {
 			locationType,
 			granularity,
 			inDate,
-			untilDate
+			untilDate,
+			color
 		})
 	}
 
@@ -148,6 +152,18 @@ export default function FormComponent({ formData, onSubmit }) {
 						className="form-control"
 						dateFormat="dd/MM/yyyy"
 						locale="pt_BR"
+					/>
+				</div>
+			</div>
+			<div id="color" className="form-group row">
+				<label htmlFor="color" className="col-sm-3 col-form-label">Cor:</label>
+
+				<div className="col-sm-9">
+					<GithubPicker
+						triangle='hide'
+						width='212px'
+						color={form.color}
+						onChangeComplete={ color => setForm({ ...form, color: color.hex }) }
 					/>
 				</div>
 			</div>

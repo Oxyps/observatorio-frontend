@@ -14,12 +14,13 @@ export default function ChartPage() {
 	const [locations, setLocations] = useState([]);
 	const [granularities, setGranularities] = useState([]);
 
-	const [chartTitle, setChartTitle] = useState('')
 	const [chartData, setChartData] = useState({
-		labels: ['0'],
+		title: '',
+		color: '#4a524c',
+		labels: [],
 		datasets: [{
-			label: '0',
-			data: [0]
+			label: '',
+			data: []
 		}]
 	})
 
@@ -48,6 +49,8 @@ export default function ChartPage() {
 		);
 
 		const chart = {
+			title: response.data.datasets[0].label,
+			color: params.color,
 			labels: response.data.until_dates,
 			datasets: [
 				{
@@ -57,7 +60,6 @@ export default function ChartPage() {
 			]
 		}
 
-		setChartTitle(response.data.datasets[0].label);
 		setChartData(chart);
 	}
 
@@ -83,7 +85,7 @@ export default function ChartPage() {
 					/>
 				</div>
 				<div className="container-fluid d-flex flex-column col-sm-8">
-					<ChartComponent chartTitle={chartTitle} chartData={chartData} />
+					<ChartComponent chartData={chartData} />
 				</div>
 			</div>
 		</div>

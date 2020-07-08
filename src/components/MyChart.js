@@ -2,29 +2,33 @@ import React, { useEffect, createRef } from 'react';
 
 import Chart from 'chart.js';
 
-export default function MyChart(props) {
+export default function MyChart({ chartData, type, options }) {
 	const canvasRef = createRef(null);
 
 	useEffect(() => {
 		new Chart(
 			canvasRef.current, {
-				type: props.type,
-				options: props.options,
+				type: type,
+				options: options,
 				data: {
-					labels: props.data.labels,
+					labels: chartData.labels,
 					datasets: [{
-						label: props.data.datasets[0].label,
-						data: props.data.datasets[0].data,
-						backgroundColor: props.color,
+						label: chartData.datasets[0].label,
+						data: chartData.datasets[0].data,
+						backgroundColor: chartData.color,
 						pointRadius: 4,
-						borderColor: props.color,
+						borderColor: chartData.color,
 						borderWidth: 1,
 						lineTension: 0
 					}]
 				}
 			}
 		);
-	}, [props, canvasRef]);
+	});
+
+	// useEffect(()=>{
+	// 	console.log(chartData);
+	// }, [chartData]);
 
 	return <canvas height="190" ref={canvasRef} />
 }

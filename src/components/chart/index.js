@@ -6,7 +6,7 @@ import MyChart from '../MyChart';
 
 // import './styles.css';
 
-export default function ChartComponent({ chartTitle, chartData }) {
+export default function ChartComponent({ chartData }) {
 	const [key, setKey] = useState('line-chart');
 
 	const options = {
@@ -23,23 +23,20 @@ export default function ChartComponent({ chartTitle, chartData }) {
 		<Tabs id='chart-tabs'
 			activeKey={key}
 			onSelect={ k => setKey(k) }
+			unmountOnExit
 		>
 			<Tab eventKey='line-chart' title='Linha'>
 				<MyChart
-					data={chartData}
-					title={chartTitle}
+					chartData={chartData}
 					type='line'
 					options={options}
-					color='#70CA'
 				/>
 			</Tab>
 			<Tab eventKey='bar-chart' title='Barra'>
 				<MyChart
-					data={chartData}
-					title={chartTitle}
+					chartData={chartData}
 					type='bar'
 					options={options}
-					color='#70CA'
 				/>
 			</Tab>
 			<Tab eventKey='pie-chart' title='Pizza' disabled>
