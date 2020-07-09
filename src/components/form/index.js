@@ -1,20 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import DatePicker, { registerLocale } from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { useForm, Controller } from 'react-hook-form';
 
 import { GithubPicker } from 'react-color';
 
+import DatePicker, { registerLocale } from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import ptBR from 'date-fns/locale/pt-BR';
-registerLocale('pt_BR', ptBR);
 
 // import './styles.css';
 
+registerLocale('pt_BR', ptBR);
+
 export default function FormComponent({ formData, onSubmit }) {
+	const { handleSubmit, register, errors, control } = useForm();
+
 	const [form, setForm] = useState({});
 
-	async function handleSubmit(event) {
-		event.preventDefault();
+	async function submit(event) {
+		// event.preventDefault();
 
 		let {
 			information,
@@ -25,7 +29,7 @@ export default function FormComponent({ formData, onSubmit }) {
 			color
 		} = form;
 
-		// yyyy-mm-dd format dates
+		//yyyy-mm-dd format dates
 		inDate = inDate.toISOString().slice(0,10);
 		untilDate = untilDate.toISOString().slice(0,10);
 
@@ -43,17 +47,20 @@ export default function FormComponent({ formData, onSubmit }) {
 	}
 
 	return(
-		<form className="d-flex flex-column" onSubmit={handleSubmit}>
+		<form className="d-flex flex-column"
+			onSubmit={handleSubmit(submit)}
+		>
 			<div id="information" className="form-group row">
 				<label htmlFor="information" className="col-sm-3 col-form-label">Informação:</label>
-
 				<div className="col-sm-9">
 					<select
+						ref={register({required: true})}
 						id="information"
-						className="custom-select"
+						name="information"
+						className={`custom-select ${errors.information && 'is-invalid'}`}
 						onChange={ e => setForm({ ...form, information: e.target.value }) }
 					>
-						<option value="0">Selecione um item</option>
+						<option value="">Selecione um item</option>
 						{formData.informations.map(information => {
 							return(
 								<option
@@ -68,14 +75,15 @@ export default function FormComponent({ formData, onSubmit }) {
 
 			<div id="location" className="form-group row">
 				<label htmlFor="location" className="col-sm-3 col-form-label">Localização:</label>
-
 				<div className="col-sm-9">
 					<select
+						ref={register({required: true})}
 						id="location"
-						className="custom-select"
+						name="location"
+						className={`custom-select ${errors.location && 'is-invalid'}`}
 						onChange={ e => setForm({ ...form, location: e.target.value })}
 					>
-						<option value="0">Selecione um item</option>
+						<option value="">Selecione um item</option>
 						{
 							Object.keys(formData.locations).map( group =>{
 								return(
@@ -98,60 +106,74 @@ export default function FormComponent({ formData, onSubmit }) {
 
 			<div id="granularity" className="form-group row">
 				<label htmlFor="granularity" className="col-sm-3 col-form-label">Granularidade:</label>
-
 				<div className="col-sm-9">
 					<select
+						ref={register({required: true})}
 						id="granularity"
-						className="custom-select"
+						name="granularity"
+						className={`custom-select ${errors.granularity && 'is-invalid'}`}
 						onChange={ e => setForm({ ...form, granularity: e.target.value }) }
 					>
-						<option value="0">Selecione um item</option>
+						<option value="">Selecione um item</option>
 						{formData.granularities.map(granularity =>
 							<option
 								key={granularity.id}
 								value={granularity.granularity}
-							>{granularity.granularity}</option>
+							>{granularity.granularidade}</option>
 						)}
 					</select>
 				</div>
 			</div>
 
 			<div id="in-date" className="form-group row">
-				<label htmlFor="in-date" className="col-sm-3 col-form-label">Data de:</label>
-
+				<label htmlFor="inDate" className="col-sm-3 col-form-label">Data de:</label>
 				<div className="col-sm-9">
-					<DatePicker
-						name="in-date"
-						id="in-date"
-						selected={form.inDate}
-						onChange={date => setForm({ ...form, inDate: date })}
-						peekNextMonth
-						showMonthDropdown
-						showYearDropdown
-						dropdownMode="select"
-						className="form-control"
-						dateFormat="dd/MM/yyyy"
-						locale="pt_BR"
+					<Controller
+						as={
+							<DatePicker
+								placeholderText='Escolha a data inicial'
+								selected={form.inDate}
+								peekNextMonth
+								showMonthDropdown
+								showYearDropdown
+								dropdownMode='select'
+								className={`form-control ${errors.inDate && 'is-invalid'}`}
+								dateFormat='dd/MM/yyyy'
+								locale='pt_BR'
+							/>
+						}
+						name='inDate'
+						control={control}
+						rules={{ required: true }}
+						onChange={ ([selected]) => { setForm({ ...form, inDate: selected }); return selected } }
 					/>
 				</div>
 			</div>
 
 			<div id="until-date" className="form-group row">
-				<label htmlFor="until-date" className="col-sm-3 col-form-label">Data até:</label>
-
+				<label htmlFor="untilDate" className="col-sm-3 col-form-label">Data até:</label>
 				<div className="col-sm-9">
-					<DatePicker
-						name="until-date"
-						id="until-date"
-						selected={form.untilDate}
-						onChange={ date => setForm({ ...form, untilDate: date }) }
-						peekNextMonth
-						showMonthDropdown
-						showYearDropdown
-						dropdownMode="select"
-						className="form-control"
-						dateFormat="dd/MM/yyyy"
-						locale="pt_BR"
+					<Controller
+						as={
+							<DatePicker
+								placeholderText='Escolha a data final'
+								selected={form.untilDate}
+								// onChange={ () => { console.log('mudo'); setForm({ ...form, untilDate: '' }) }}
+								peekNextMonth
+								showMonthDropdown
+								showYearDropdown
+								dropdownMode='select'
+								className={`form-control ${errors.untilDate && 'is-invalid'}`}
+								dateFormat='dd/MM/yyyy'
+								locale='pt_BR'
+							/>
+						}
+						name='untilDate'
+						control={control}
+						// errors={errors}
+						rules={{required: true}}
+						// register={register()}
+						onChange={ ([selected]) => { setForm({ ...form, untilDate: selected }); return selected } }
 					/>
 				</div>
 			</div>
@@ -160,6 +182,8 @@ export default function FormComponent({ formData, onSubmit }) {
 
 				<div className="col-sm-9">
 					<GithubPicker
+						id='color'
+						name='color'
 						triangle='hide'
 						width='212px'
 						color={form.color}

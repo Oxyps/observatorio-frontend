@@ -16,7 +16,7 @@ export default function ChartPage() {
 
 	const [chartData, setChartData] = useState({
 		title: '',
-		color: '#4a524c',
+		color: '',
 		labels: [],
 		datasets: [{
 			label: '',
@@ -35,7 +35,7 @@ export default function ChartPage() {
 				.then(axios.spread( (infRes, locRes, granRes) => {
 					setInformations(infRes.data);
 					setLocations(locRes.data);
-					setGranularities(granRes.data);
+					setGranularities(granRes.data.data);
 				}))
 				.catch(errors => {
 					// console.log(errors);
@@ -71,20 +71,20 @@ export default function ChartPage() {
 		<div className="container-fluid d-flex flex-column align-items-center justify-items-center">
 			<div className="d-flex flex-row container-fluid">
 				<div className="container-fluid col-4">
-					<h1>Form Component</h1>
+					<h1>Formulário</h1>
 				</div>
-				<div className="container-fluid col-8">
-					<h1>Chart Component</h1>
+				<div className="container-fluid col-4">
+					<h1>Gráfico</h1>
 				</div>
 			</div>
 			<div className="d-flex flex-row">
-				<div className="container-fluid col-sm-4">
+				<div className="container col-sm-4">
 					<FormComponent
 						onSubmit={handleGetChartData}
 						formData={{informations, locations, granularities}}
 					/>
 				</div>
-				<div className="container-fluid d-flex flex-column col-sm-8">
+				<div className="container d-flex flex-column col-sm-8">
 					<ChartComponent chartData={chartData} />
 				</div>
 			</div>

@@ -15,9 +15,9 @@ export default function MyChart({ chartData, type, options }) {
 					datasets: [{
 						label: chartData.datasets[0].label,
 						data: chartData.datasets[0].data,
-						backgroundColor: chartData.color,
+						borderColor: chartData.color || '#000',
+						// backgroundColor: chartData.color,
 						pointRadius: 4,
-						borderColor: chartData.color,
 						borderWidth: 1,
 						lineTension: 0
 					}]
