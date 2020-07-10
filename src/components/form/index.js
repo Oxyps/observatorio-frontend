@@ -33,12 +33,13 @@ export default function FormComponent(props) {
 		inDate = inDate.toISOString().slice(0,10);
 		untilDate = untilDate.toISOString().slice(0,10);
 
-		const [ locationName, locationType ] = location.split('_')
+		const [ locationName, locationType, locationState ] = location.split('_')
 
 		await props.onSubmit({
 			information,
 			locationName,
 			locationType,
+			locationState,
 			granularity,
 			inDate,
 			untilDate,
@@ -53,8 +54,8 @@ export default function FormComponent(props) {
 				group => props.locations[group].map(
 					location =>
 						newArray.push({
-							'label': location.name+' '+group,
-							'value': location.name+'_'+group
+							'label': location.name+' '+group+' '+location.state,
+							'value': location.name+'_'+group+'_'+location.state
 						})
 					)
 			);
