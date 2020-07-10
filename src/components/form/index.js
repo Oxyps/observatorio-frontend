@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-
+import WindowedSelect from 'react-windowed-select';
 import { GithubPicker } from 'react-color';
-
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ptBR from 'date-fns/locale/pt-BR';
 
+import { DevTool } from 'react-hook-form-devtools';
 // import './styles.css';
 
 registerLocale('pt_BR', ptBR);
 
-export default function FormComponent({ formData, onSubmit }) {
-	const { handleSubmit, register, errors, control } = useForm();
-
+export default function FormComponent(props) {
+	const [locations, setLocations] = useState(props.locations);
 	const [form, setForm] = useState({});
 
-	async function submit(event) {
+	const { handleSubmit, register, errors, control } = useForm();
+
+	async function submit() {
 		// event.preventDefault();
 
 		let {
@@ -35,7 +35,7 @@ export default function FormComponent({ formData, onSubmit }) {
 
 		const [ locationName, locationType ] = location.split('_')
 
-		await onSubmit({
+		await props.onSubmit({
 			information,
 			locationName,
 			locationType,
@@ -46,10 +46,35 @@ export default function FormComponent({ formData, onSubmit }) {
 		})
 	}
 
+	const memoizedLocations = useMemo(
+		() => {
+			let newArray = [];
+			Object.keys(props.locations).map(
+				group => props.locations[group].map(
+					location =>
+						newArray.push({
+							'label': location.name+' '+group,
+							'value': location.name+'_'+group
+						})
+					)
+			);
+
+			return newArray;
+		},
+		[props.locations]
+	);
+
+	useEffect(() => {
+		setLocations(memoizedLocations);
+	}, [memoizedLocations]);
+
 	return(
 		<form className="d-flex flex-column"
+			autoComplete="off"
 			onSubmit={handleSubmit(submit)}
 		>
+			<DevTool control={control} />
+
 			<div id="information" className="form-group row">
 				<label htmlFor="information" className="col-sm-3 col-form-label">Informação:</label>
 				<div className="col-sm-9">
@@ -61,7 +86,7 @@ export default function FormComponent({ formData, onSubmit }) {
 						onChange={ e => setForm({ ...form, information: e.target.value }) }
 					>
 						<option value="">Selecione um item</option>
-						{formData.informations.map(information => {
+						{props.informations.map(information => {
 							return(
 								<option
 									key={information.id}
@@ -76,31 +101,28 @@ export default function FormComponent({ formData, onSubmit }) {
 			<div id="location" className="form-group row">
 				<label htmlFor="location" className="col-sm-3 col-form-label">Localização:</label>
 				<div className="col-sm-9">
-					<select
-						ref={register({required: true})}
-						id="location"
-						name="location"
-						className={`custom-select ${errors.location && 'is-invalid'}`}
-						onChange={ e => setForm({ ...form, location: e.target.value })}
-					>
-						<option value="">Selecione um item</option>
-						{
-							Object.keys(formData.locations).map( group =>{
-								return(
-									formData.locations[group].map( location => {
-										return(
-											<option
-												key={location.id}
-												value={location.name+'_'+group}
-											>
-												{location.name+' '+group}
-											</option>
-										)
-									})
-								)
+					<Controller
+						control={control}
+						rules={{required: true}}
+						name='location'
+						as={WindowedSelect}
+						placeholder='Selecione um item'
+						styles={{
+							container: () => ({
+								width: 300
+							}),
+							option: () => ({
+								cursor: 'default',
+								width: 400
 							})
-						}
-					</select>
+						}}
+						options={locations}
+						onChange={ ([selected]) => {
+							setForm({ ...form, location: selected.value });
+							return selected;
+						}}
+						className={errors.information && 'is-invalid'}
+					/>
 				</div>
 			</div>
 
@@ -115,7 +137,7 @@ export default function FormComponent({ formData, onSubmit }) {
 						onChange={ e => setForm({ ...form, granularity: e.target.value }) }
 					>
 						<option value="">Selecione um item</option>
-						{formData.granularities.map(granularity =>
+						{props.granularities.map(granularity =>
 							<option
 								key={granularity.id}
 								value={granularity.granularity}
@@ -131,13 +153,13 @@ export default function FormComponent({ formData, onSubmit }) {
 					<Controller
 						as={
 							<DatePicker
-								placeholderText='Escolha a data inicial'
+								placeholderText='Escolha uma data'
 								selected={form.inDate}
 								peekNextMonth
 								showMonthDropdown
 								showYearDropdown
 								dropdownMode='select'
-								className={`form-control ${errors.inDate && 'is-invalid'}`}
+								className={`custom-select ${errors.inDate && 'is-invalid'}`}
 								dateFormat='dd/MM/yyyy'
 								locale='pt_BR'
 							/>
@@ -145,7 +167,10 @@ export default function FormComponent({ formData, onSubmit }) {
 						name='inDate'
 						control={control}
 						rules={{ required: true }}
-						onChange={ ([selected]) => { setForm({ ...form, inDate: selected }); return selected } }
+						onChange={ ([selected]) => {
+							setForm({ ...form, inDate: selected });
+							return selected;
+						} }
 					/>
 				</div>
 			</div>
@@ -156,27 +181,25 @@ export default function FormComponent({ formData, onSubmit }) {
 					<Controller
 						as={
 							<DatePicker
-								placeholderText='Escolha a data final'
+								placeholderText='Escolha uma data'
 								selected={form.untilDate}
-								// onChange={ () => { console.log('mudo'); setForm({ ...form, untilDate: '' }) }}
 								peekNextMonth
 								showMonthDropdown
 								showYearDropdown
 								dropdownMode='select'
-								className={`form-control ${errors.untilDate && 'is-invalid'}`}
+								className={`custom-select ${errors.untilDate && 'is-invalid'}`}
 								dateFormat='dd/MM/yyyy'
 								locale='pt_BR'
 							/>
 						}
 						name='untilDate'
 						control={control}
-						// errors={errors}
 						rules={{required: true}}
-						// register={register()}
 						onChange={ ([selected]) => { setForm({ ...form, untilDate: selected }); return selected } }
 					/>
 				</div>
 			</div>
+
 			<div id="color" className="form-group row">
 				<label htmlFor="color" className="col-sm-3 col-form-label">Cor:</label>
 

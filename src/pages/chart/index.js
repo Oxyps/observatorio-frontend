@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { trackPromise } from 'react-promise-tracker';
-
+import 'bootstrap/dist/css/bootstrap.css';
 import FormComponent from '../../components/form';
 import ChartComponent from '../../components/chart';
 
@@ -81,7 +81,9 @@ export default function ChartPage() {
 				<div className="container col-sm-4">
 					<FormComponent
 						onSubmit={handleGetChartData}
-						formData={{informations, locations, granularities}}
+						informations={informations}
+						locations={locations}
+						granularities={granularities}
 					/>
 				</div>
 				<div className="container d-flex flex-column col-sm-8">

@@ -1,63 +1,18 @@
-form {
-	/* height: 98vh; */
-	width: 50%;
-	border: 1px solid black;
-	border-radius: 10px;
-	/* background-color: ; */
-
-	margin: 10px 5px 5px 5px;
-	padding: 10px 10px 10px 10px;
-
-	display: flex;
-	flex-direction: column;
-	/* align-items: center; */
+/* .undefined:valid {
+	box-shadow: 0;
+	border-color: #ced4da;
 }
 
-form h1 {
-	align-self: center;
-}
+.invalid:invalid {
+} */
 
-form .input-block {
-	margin-top: 20px;
-	padding-left: 20px;
-}
+/* .react-select .is-invalid,
+.react-datepicker .is-invalid {
+	border: 1px solid red;
+	border-radius: 5px;
+	box-shadow: 0 0 .5em orangered;
+} */
 
-form .input-block label {
-    /* color: gray; */
-    font-size: 20px;
-	font-weight: bold;
-}
+/* .react-select.is-valid, {
 
-form .input-block input, select {
-    width: 50%;
-    height: 32px;
-    font-size: 14px;
-    color: #666;
-    border: 0;
-	border-bottom: 1px solid #EEE;
-
-	margin-left: 20px;
-}
-
-form button {
-	align-self: center;
-}
-
-form button[type=submit] {
-    width: 50%;
-    border: 0;
-    margin-top: 30px;
-    background: #56b829;
-    border-radius: 2px;
-    padding: 15px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #FFF;
-    cursor: pointer;
-
-    transition: width 0.5s;
-}
-
-form button[type=submit]:hover {
-    background: #2cde14;
-}
+} */

@@ -25,11 +25,7 @@ An API was created to serve the backend. This project consumes [observatorio-bac
 **Windows**
 - Install all project dependencies:
 ``` shell
-> yarn add
-```
-or
-```
-> npm intall
+> yarn
 ```
 
 - Run server:
