@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@date-io/date-fns": "1.x",
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "@material-ui/pickers": "^3.2.10",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -10,17 +15,17 @@
     "bootstrap": "4.0.0",
     "chart.js": "^2.9.3",
     "date-fns": "^2.14.0",
+    "fontsource-roboto": "^2.1.4",
     "react": "^16.13.1",
     "react-bootstrap": "^1.1.1",
     "react-color": "^2.18.1",
-    "react-datepicker": "2.14.0",
     "react-dom": "^16.13.1",
     "react-hook-form": "5.1.1",
     "react-loader-spinner": "^3.1.14",
     "react-promise-tracker": "^2.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
-    "react-windowed-select": "^2.0.3"
+    "react-window": "^1.8.5"
   },
   "scripts": {
     "start": "react-scripts start",

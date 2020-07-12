@@ -1,18 +1,9 @@
-/* .undefined:valid {
-	box-shadow: 0;
-	border-color: #ced4da;
+/* .invalid-input {
+	border: 1px solid red;
+	box-shadow: 0 0 .5em orangered;
+	border-radius: 5px;
 }
 
-.invalid:invalid {
-} */
-
-/* .react-select .is-invalid,
-.react-datepicker .is-invalid {
-	border: 1px solid red;
-	border-radius: 5px;
-	box-shadow: 0 0 .5em orangered;
-} */
-
-/* .react-select.is-valid, {
-
+.invalid-message {
+	color: #dc3545;
 } */

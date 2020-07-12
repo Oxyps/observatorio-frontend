@@ -1,39 +1,53 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import WindowedSelect from 'react-windowed-select';
-import { GithubPicker } from 'react-color';
-import DatePicker, { registerLocale } from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import ptBR from 'date-fns/locale/pt-BR';
+import React, { useState } from 'react';
 
-import { DevTool } from 'react-hook-form-devtools';
+import { useForm, Controller } from 'react-hook-form';
+// import { DevTool } from 'react-hook-form-devtools';
+
+import { GithubPicker } from 'react-color';
+
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import ptBR from 'date-fns/locale/pt-BR';
+import DateFnsUtils from "@date-io/date-fns";
+
+import VirtualizedSelect from './VirtualizedSelect'
+
 // import './styles.css';
 
-registerLocale('pt_BR', ptBR);
-
 export default function FormComponent(props) {
-	const [locations, setLocations] = useState(props.locations);
-	const [form, setForm] = useState({});
+	const [information, setInformation] = useState('');
+	const [location, setLocation] = useState('');
+	const [granularity, setGranularity] = useState('');
+	const [inDate, setInDate] = useState({
+		yearMonth: new Date(),
+		day: new Date()
+	});
+	const [untilDate, setUntilDate] = useState({
+		yearMonth: new Date(),
+		day: new Date()
+	});
+	const [color, setColor] = useState('');
 
-	const { handleSubmit, register, errors, control } = useForm();
+	const { handleSubmit, register, errors, control } = useForm({
+		mode: 'onSubmit',
+		submitFocusError: false
+	});
 
 	async function submit() {
-		// event.preventDefault();
-
-		let {
-			information,
-			location,
-			granularity,
-			inDate,
-			untilDate,
-			color
-		} = form;
-
 		//yyyy-mm-dd format dates
-		inDate = inDate.toISOString().slice(0,10);
-		untilDate = untilDate.toISOString().slice(0,10);
+		const inDateYearMonth = inDate.yearMonth.toISOString().slice(0,7);
+		const inDateDay = inDate.day.toISOString().slice(7,10);
+		const untilDateYearMonth = untilDate.yearMonth.toISOString().slice(0,7);
+		const untilDateDay = untilDate.day.toISOString().slice(7,10);
 
-		const [ locationName, locationType, locationState ] = location.split('_')
+		const [ locationName, locationType, locationState ] = location.split(' ')
 
 		await props.onSubmit({
 			information,
@@ -41,186 +55,196 @@ export default function FormComponent(props) {
 			locationType,
 			locationState,
 			granularity,
-			inDate,
-			untilDate,
+			inDate: inDateYearMonth + inDateDay,
+			untilDate: untilDateYearMonth + untilDateDay,
 			color
 		})
 	}
 
-	const memoizedLocations = useMemo(
-		() => {
-			let newArray = [];
-			Object.keys(props.locations).map(
-				group => props.locations[group].map(
-					location =>
-						newArray.push({
-							'label': location.name+' '+group+' '+location.state,
-							'value': location.name+'_'+group+'_'+location.state
-						})
-					)
-			);
-
-			return newArray;
-		},
-		[props.locations]
-	);
-
-	useEffect(() => {
-		setLocations(memoizedLocations);
-	}, [memoizedLocations]);
-
 	return(
-		<form className="d-flex flex-column"
-			autoComplete="off"
+		<Form
+			noValidate
+			autoComplete='off'
 			onSubmit={handleSubmit(submit)}
 		>
-			<DevTool control={control} />
+			{/* <DevTool control={control} /> */}
 
-			<div id="information" className="form-group row">
-				<label htmlFor="information" className="col-sm-3 col-form-label">Informação:</label>
-				<div className="col-sm-9">
-					<select
-						ref={register({required: true})}
-						id="information"
-						name="information"
-						className={`custom-select ${errors.information && 'is-invalid'}`}
-						onChange={ e => setForm({ ...form, information: e.target.value }) }
-					>
-						<option value="">Selecione um item</option>
-						{props.informations.map(information => {
-							return(
-								<option
-									key={information.id}
-									value={information.nickname}
-								>{information.nickname}</option>
-							)
-						})}
-					</select>
-				</div>
-			</div>
+			<Form.Group controlId='information'>
+				<Form.Label>Informação:</Form.Label>
+				<Autocomplete
+					options={props.informations}
+					getOptionLabel={ option => option.nickname }
+					renderInput={ params =>
+						<TextField
+							{...params} label='Selecione um item'
+							inputRef={register({ required: true })}
+							name='information' variant='outlined'
+							error={!!errors.information}
+						/>
+					}
+					onChange={ (event, value) =>
+						setInformation(value.nickname)
+					}
+					style={{ width: 360 }}
+					autoComplete
+					autoSelect
+				/>
+			</Form.Group>
 
-			<div id="location" className="form-group row">
-				<label htmlFor="location" className="col-sm-3 col-form-label">Localização:</label>
-				<div className="col-sm-9">
-					<Controller
-						control={control}
-						rules={{required: true}}
-						name='location'
-						as={WindowedSelect}
-						placeholder='Selecione um item'
-						styles={{
-							container: () => ({
-								width: 300
-							}),
-							option: () => ({
-								cursor: 'default',
-								width: 400
-							})
-						}}
-						options={locations}
-						onChange={ ([selected]) => {
-							setForm({ ...form, location: selected.value });
-							return selected;
-						}}
-						className={errors.information && 'is-invalid'}
-					/>
-				</div>
-			</div>
+			<Form.Group controlId='location'>
+				<Form.Label>Localização:</Form.Label>
+				<VirtualizedSelect
+					name='location'
+					register={register({ required: true })}
+					data={props.locations}
+					onChange={ (event, value) => setLocation(value) }
+					error={!!errors.location}
+				/>
+			</Form.Group>
 
-			<div id="granularity" className="form-group row">
-				<label htmlFor="granularity" className="col-sm-3 col-form-label">Granularidade:</label>
-				<div className="col-sm-9">
-					<select
-						ref={register({required: true})}
-						id="granularity"
-						name="granularity"
-						className={`custom-select ${errors.granularity && 'is-invalid'}`}
-						onChange={ e => setForm({ ...form, granularity: e.target.value }) }
-					>
-						<option value="">Selecione um item</option>
-						{props.granularities.map(granularity =>
-							<option
-								key={granularity.id}
-								value={granularity.granularity}
-							>{granularity.granularidade}</option>
-						)}
-					</select>
-				</div>
-			</div>
+			<Form.Group controlId='granularity'>
+				<Form.Label>Granularidade:</Form.Label>
+				<Autocomplete
+					options={props.granularities}
+					getOptionLabel={ option => option.granularidade }
+					renderInput={ params =>
+						<TextField
+							{...params} label='Selecione um item'
+							inputRef={register({ required: true })}
+							name='granularity' variant='outlined'
+							error={!!errors.granularity}
+						/>
+					}
+					onChange={ (event, value) =>
+						setGranularity(value.granularity)
+					}
+					style={{ width: 360 }}
+					autoComplete
+					autoSelect
+				/>
+			</Form.Group>
 
-			<div id="in-date" className="form-group row">
-				<label htmlFor="inDate" className="col-sm-3 col-form-label">Data de:</label>
-				<div className="col-sm-9">
-					<Controller
-						as={
-							<DatePicker
-								placeholderText='Escolha uma data'
-								selected={form.inDate}
-								peekNextMonth
-								showMonthDropdown
-								showYearDropdown
-								dropdownMode='select'
-								className={`custom-select ${errors.inDate && 'is-invalid'}`}
-								dateFormat='dd/MM/yyyy'
-								locale='pt_BR'
-							/>
-						}
-						name='inDate'
-						control={control}
-						rules={{ required: true }}
-						onChange={ ([selected]) => {
-							setForm({ ...form, inDate: selected });
-							return selected;
-						} }
-					/>
-				</div>
-			</div>
+			<Form.Group as={Row} controlId='inDate'>
+				<Form.Label column md={3}>Início:</Form.Label>
+				<MuiPickersUtilsProvider utils={DateFnsUtils} locale={ptBR}>
+					<Col md={3}>
+						<Controller as={
+							<KeyboardDatePicker
+								minDate='1990/01/01'
+								maxDate='2022/01/01'
+								format='dd'
+								disableToolbar
+								label='Dia'
+								value={inDate.day}
+								error={!!errors.inDateDay}
+								invalidDateMessage='(dd)'
+								style={{width: 80}}
+							/>}
+							name='inDateDay'
+							control={control}
+							rules={{ required: true }}
+							onChange={ ([selected]) => {
+								setInDate({ ...inDate, day: selected });
+								return selected;
+							}}
+						/>
+					</Col>
+					<Col md={5}>
+						<Controller as={
+							<KeyboardDatePicker
+								minDate='1990/01/01'
+								maxDate='2022/01/01'
+								openTo='year'
+								views={['year', 'month']}
+								format='MM/yyyy'
+								label='Mês e ano'
+								value={inDate.yearMonth}
+								error={!!errors.inDateYearMonth}
+								invalidDateMessage='(MM/yyyy)'
+								style={{width: 140}}
+							/>}
+							name='inDateYearMonth'
+							control={control}
+							rules={{ required: true }}
+							onChange={ ([selected]) => {
+								setInDate({ ...inDate, yearMonth: selected });
+								return selected;
+							}}
+						/>
+					</Col>
+				</MuiPickersUtilsProvider>
+			</Form.Group>
 
-			<div id="until-date" className="form-group row">
-				<label htmlFor="untilDate" className="col-sm-3 col-form-label">Data até:</label>
-				<div className="col-sm-9">
-					<Controller
-						as={
-							<DatePicker
-								placeholderText='Escolha uma data'
-								selected={form.untilDate}
-								peekNextMonth
-								showMonthDropdown
-								showYearDropdown
-								dropdownMode='select'
-								className={`custom-select ${errors.untilDate && 'is-invalid'}`}
-								dateFormat='dd/MM/yyyy'
-								locale='pt_BR'
-							/>
-						}
-						name='untilDate'
-						control={control}
-						rules={{required: true}}
-						onChange={ ([selected]) => { setForm({ ...form, untilDate: selected }); return selected } }
-					/>
-				</div>
-			</div>
+			<Form.Group as={Row} controlId='untilDate'>
+				<Form.Label column md={3}>Final:</Form.Label>
+				<MuiPickersUtilsProvider utils={DateFnsUtils} locale={ptBR}>
+					<Col md={3}>
+						<Controller as={
+							<KeyboardDatePicker
+								minDate='1990/01/01'
+								maxDate='2022/01/01'
+								format='dd'
+								disableToolbar
+								label='Dia'
+								value={inDate.day}
+								error={!!errors.untilDateDay}
+								invalidDateMessage='(dd)'
+								style={{width: 80}}
+							/>}
+							name='untilDateDay'
+							control={control}
+							rules={{ required: true }}
+							onChange={ ([selected]) => {
+								setUntilDate({ ...untilDate, day: selected });
+								return selected;
+							}}
+						/>
+					</Col>
+					<Col md={5}>
+						<Controller as={
+							<KeyboardDatePicker
+								minDate='1990/01/01'
+								maxDate='2022/01/01'
+								openTo='year'
+								views={['year', 'month']}
+								format='MM/yyyy'
+								label='Mês e ano'
+								value={inDate.yearMonth}
+								error={!!errors.untilDateYearMonth}
+								invalidDateMessage='(MM/yyyy)'
+								style={{width: 140}}
+							/>}
+							name='untilDateYearMonth'
+							control={control}
+							rules={{ required: true }}
+							onChange={ ([selected]) => {
+								setUntilDate({ ...untilDate, yearMonth: selected });
+								return selected;
+							}}
+						/>
+					</Col>
+				</MuiPickersUtilsProvider>
+			</Form.Group>
 
-			<div id="color" className="form-group row">
-				<label htmlFor="color" className="col-sm-3 col-form-label">Cor:</label>
-
-				<div className="col-sm-9">
+			<Form.Group as={Row} controlId='color'>
+				<Form.Label column md={3}>Cor:</Form.Label>
+				<Col md={9}>
 					<GithubPicker
 						id='color'
 						name='color'
 						triangle='hide'
 						width='212px'
-						color={form.color}
-						onChangeComplete={ color => setForm({ ...form, color: color.hex }) }
+						color={color}
+						onChangeComplete={ color => setColor(color.hex) }
 					/>
-				</div>
-			</div>
+				</Col>
+			</Form.Group>
 
-			<div className="row justify-content-center pt-3">
-				<div className="col-6">
-					<input className="btn btn-secondary btn-block" type="submit" />
-				</div>
-			</div>
-		</form>
+			<Form.Group as={Row}>
+				<Col md={{ span: 6, offset: 4 }}>
+					<Button type='submit' variant='secondary'>Gerar gráfico</Button>
+				</Col>
+			</Form.Group>
+		</Form>
 	);
 }

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { trackPromise } from 'react-promise-tracker';
-import 'bootstrap/dist/css/bootstrap.css';
 import FormComponent from '../../components/form';
 import ChartComponent from '../../components/chart';
 
