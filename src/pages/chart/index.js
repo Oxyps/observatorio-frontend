@@ -83,7 +83,7 @@ export default function ChartPage() {
 	return(
 		<>
 			<aside>
-				<strong>Formulário</strong>
+				{/* <strong>Formulário</strong> */}
 				<FormComponent
 					onSubmit={handleGetChartData}
 					informations={informations}
@@ -93,7 +93,7 @@ export default function ChartPage() {
 			</aside>
 			<hr className="solid"/>
 			<main>
-				<strong>Gráfico</strong>
+				{/* <strong>Gráfico</strong> */}
 				<ChartComponent chartData={chartData} />
 				<Button id='save-chart'
 					variant='contained'

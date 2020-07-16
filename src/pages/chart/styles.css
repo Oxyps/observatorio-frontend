@@ -1,36 +1,15 @@
-aside {
-	width: 500px;
-
-	margin: 0 10px 0 10px;
-
-	display: flex;
-	flex-direction: column;
-
-	align-items: center;
-	justify-content: center;
-}
-
 strong {
 	height: 40px;
-	font-size: 30px;
 	margin-bottom: 25px;
+	font-size: 30px;
 	text-align: center;
 	display: block;
 	color: #333;
 }
-
-hr {
-	border-left: 1px solid #FF6D00;
-	height: 600px;
-	align-self: center;
-	justify-self: center;
-	margin: 0 5px 0 5px;
-}
-
-main {
-	height: 100vh;
-	width: 1100px;
-	min-width: 850px;
+aside {
+	width: 500px;
+	margin: 0;
+    background: #f2f2f7;
 
 	display: flex;
 	flex-direction: column;
@@ -38,13 +17,30 @@ main {
 	align-items: center;
 	justify-content: center;
 }
+hr {
+	border-left: 2px solid #FF6D00;
+	height: 100vh;
+	align-self: center;
+	justify-self: center;
+	margin: 0 5px 0 0;
+}
+main {
+	height: 100vh;
+	width: 1100px;
+	min-width: 850px;
+	margin: 0 auto;
 
+	display: flex;
+	flex-direction: column;
+
+	align-items: center;
+	justify-content: center;
+}
 #save-chart {
 	display: flex;
 	margin: 15px 0 20px 0;
 	justify-self: staren;
 }
-
 @media(max-width: 1000px) {
     #root {
 		flex-direction: column;
@@ -56,7 +52,7 @@ main {
 	}
 	hr {
 		height: 0;
-		width: 850px;
+		width: 100vh;
 		border-left: 0;
 		border-top: 1px solid #FF6D00;
 		margin: 20px 0 10px 0;

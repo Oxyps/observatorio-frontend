@@ -19,10 +19,6 @@ export default function ChartComponent({ chartData }) {
 				}
 			}]
 		},
-		tooltips: {
-			enabled: false
-		},
-		events: []
 	};
 
 	return(
