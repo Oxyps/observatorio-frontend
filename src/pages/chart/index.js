@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { trackPromise } from 'react-promise-tracker';
 
+import { Button } from '@material-ui/core';
+import SaveIcon from '@material-ui/icons/Save';
+
+import 'blueimp-canvas-to-blob/js/canvas-to-blob.min';
+import { saveAs } from 'file-saver';
+
 import api from '../../services/api';
 import FormComponent from '../../components/form';
 import ChartComponent from '../../components/chart';
@@ -62,6 +68,14 @@ export default function ChartPage() {
 		setChartData(chart);
 	}
 
+	function handleSaveChart() {
+		const canvasElement = document.getElementsByTagName('canvas')[0];
+
+		canvasElement.toBlob( blob => {
+			saveAs(blob, 'chart.png');
+		});
+	}
+
 	useEffect(() => {
 		loadFormData();
 	}, []);
@@ -81,6 +95,11 @@ export default function ChartPage() {
 			<main>
 				<strong>Gráfico</strong>
 				<ChartComponent chartData={chartData} />
+				<Button id='save-chart'
+					variant='contained'
+					startIcon={<SaveIcon />}
+					onClick={handleSaveChart}
+				>Salvar gráfico</Button>
 			</main>
 		</>
 	);

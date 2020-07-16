@@ -5,9 +5,21 @@ import Chart from 'chart.js';
 export default function MyChart({ chartData, type, options }) {
 	const canvasRef = createRef(null);
 
+	function handleAfterRender(chart, options) {
+		var ctx = chart.chart.ctx;
+		// ctx.save();
+		ctx.globalCompositeOperation = 'destination-over';
+		ctx.fillStyle = 'white';
+		ctx.fillRect(0, 0, chart.chart.width, chart.chart.height);
+		// ctx.restore();
+	}
+
 	useEffect(() => {
 		new Chart(
 			canvasRef.current, {
+				plugins: [{
+					afterRender: handleAfterRender
+				}],
 				type: type,
 				options: options,
 				data: {
@@ -17,9 +29,10 @@ export default function MyChart({ chartData, type, options }) {
 						data: chartData.datasets[0].data,
 						borderColor: chartData.color || '#000',
 						// backgroundColor: chartData.color,
-						pointRadius: 4,
+						fill: false,
+						pointRadius: 3,
 						borderWidth: 1,
-						lineTension: 0
+						lineTension: 0,
 					}]
 				}
 			}
@@ -30,5 +43,5 @@ export default function MyChart({ chartData, type, options }) {
 	// 	console.log(chartData);
 	// }, [chartData]);
 
-	return <canvas height="500" width="850" ref={canvasRef} />
+	return <canvas height="400" width="850" ref={canvasRef} />
 }

@@ -18,7 +18,11 @@ export default function ChartComponent({ chartData }) {
 					min: 0,
 				}
 			}]
-		}
+		},
+		tooltips: {
+			enabled: false
+		},
+		events: []
 	};
 
 	return(

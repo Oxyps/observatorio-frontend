@@ -9,7 +9,7 @@ const LoadingIndicator = props => {
 
 	return promiseInProgress && (
 		<div id="loader-wrapper">
-			<Loader type="ThreeDots" color="#4a524c" height="100" width="100"/>
+			<Loader type='ThreeDots' color='#4a524' height='130' width='130'/>
 		</div>
 	);
 }
