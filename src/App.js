@@ -1,14 +1,16 @@
 import React from 'react';
-import Routes from './routes';
+import { ThemeProvider } from '@material-ui/core/styles';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'fontsource-roboto';
-// import './global.css';
-// import './App.css';
+import Routes from './routes';
+import createMuiTheme from './components/theme';
+
+import './global.css';
 
 function App() {
 	return(
-		<Routes />
+		<ThemeProvider theme={createMuiTheme}>
+			<Routes />
+		</ThemeProvider>
 	);
 }
 

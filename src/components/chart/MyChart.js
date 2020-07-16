@@ -30,5 +30,5 @@ export default function MyChart({ chartData, type, options }) {
 	// 	console.log(chartData);
 	// }, [chartData]);
 
-	return <canvas height="190" ref={canvasRef} />
+	return <canvas height="500" width="850" ref={canvasRef} />
 }

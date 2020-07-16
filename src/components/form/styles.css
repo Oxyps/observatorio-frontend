@@ -1,9 +1,21 @@
-/* .invalid-input {
-	border: 1px solid red;
-	box-shadow: 0 0 .5em orangered;
-	border-radius: 5px;
+#date-wrapper {
+	width: 300px;
+
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	justify-content: center;
+
+	margin-top: 15px;
+	margin-bottom: 25px;
 }
 
-.invalid-message {
-	color: #dc3545;
-} */
+#color-wrapper {
+	margin-top: 25px;
+	display: flex;
+	justify-content: center;
+}
+
+form button[type=submit] {
+	margin-top: 25px;
+}

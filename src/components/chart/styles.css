@@ -1,17 +1,5 @@
-/* #chart-component {
-	height: 95vh;
-	width: 60%;
-	border: 1px solid green;
-
-	margin: 10px 5px 5px 5px;
-	padding-left: 20px;
-
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-} */
-
-/* #chart {
-	height: 300px;
-	width: 300px;
-} */
+.tabs {
+	background-color: black;
+	align-self: left;
+	justify-self: left;
+}

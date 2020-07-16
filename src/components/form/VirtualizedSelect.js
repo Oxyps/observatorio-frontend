@@ -9,6 +9,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import { VariableSizeList } from 'react-window';
 import { Typography } from '@material-ui/core';
+import _ from 'lodash/fp';
 
 const LISTBOX_PADDING = 8; // px
 
@@ -130,27 +131,24 @@ export default function VirtualizedSelect(props) {
 
 	return (
 		<Autocomplete
-			id='locations'
-			style={{ width: 360 }}
-			autoComplete
-			autoSelect
 			disableListWrap
 			classes={classes}
 			ListboxComponent={ListboxComponent}
+			renderOption={(option) => <Typography noWrap>{option}</Typography>}
 			renderGroup={renderGroup}
 			options={getLocations()}
+			getOptionSelected={(option, value) => _.isEqual(option, value)}
 			// groupBy={ option => option[0].toUpperCase() }
 			renderInput={ params =>
 				<TextField
-					{...params} variant='outlined' label='Selecione um item'
-					inputRef={props.register} name={props.name} error={props.error}
+					{...params} label='Selecione a localização'
+					error={props.error} margin='normal'
 				/>
 			}
-			renderOption={(option) => <Typography noWrap>{option}</Typography>}
 			onChange={props.onChange}
-			// onChange={ (event, value) => {
-			// 	console.log(value)
-			// }}
+			noOptionsText='Nenhuma opção encontrada'
+			fullWidth
+			autoComplete
 		/>
   	);
 }

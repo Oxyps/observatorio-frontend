@@ -1,52 +1,40 @@
 import React, { useState } from 'react';
 
 import { useForm, Controller } from 'react-hook-form';
-// import { DevTool } from 'react-hook-form-devtools';
 
 import { GithubPicker } from 'react-color';
 
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import { Button } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
 
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import ptBR from 'date-fns/locale/pt-BR';
 import DateFnsUtils from "@date-io/date-fns";
 
+import _ from 'lodash/fp';
+
 import VirtualizedSelect from './VirtualizedSelect'
 
-// import './styles.css';
+import './styles.css';
 
 export default function FormComponent(props) {
-	const [information, setInformation] = useState('');
-	const [location, setLocation] = useState('');
-	const [granularity, setGranularity] = useState('');
-	const [inDate, setInDate] = useState({
-		yearMonth: new Date(),
-		day: new Date()
-	});
-	const [untilDate, setUntilDate] = useState({
-		yearMonth: new Date(),
-		day: new Date()
-	});
-	const [color, setColor] = useState('');
+	const [information, setInformation] = useState();
+	const [location, setLocation] = useState();
+	const [granularity, setGranularity] = useState();
+	const [inDate, setInDate] = useState();
+	const [untilDate, setUntilDate] = useState();
+	const [color, setColor] = useState();
 
-	const { handleSubmit, register, errors, control } = useForm({
-		mode: 'onSubmit',
-		submitFocusError: false
+	const { handleSubmit, errors, control } = useForm({
+		mode: 'onChange',
+		submitFocusError: false,
 	});
 
 	async function submit() {
 		//yyyy-mm-dd format dates
-		const inDateYearMonth = inDate.yearMonth.toISOString().slice(0,7);
-		const inDateDay = inDate.day.toISOString().slice(7,10);
-		const untilDateYearMonth = untilDate.yearMonth.toISOString().slice(0,7);
-		const untilDateDay = untilDate.day.toISOString().slice(7,10);
-
+		const ISOinDate = inDate.toISOString().slice(0, 10);
+		const ISOuntilDate = untilDate.toISOString().slice(0, 10);
 		const [ locationName, locationType, locationState ] = location.split(' ')
 
 		await props.onSubmit({
@@ -55,196 +43,181 @@ export default function FormComponent(props) {
 			locationType,
 			locationState,
 			granularity,
-			inDate: inDateYearMonth + inDateDay,
-			untilDate: untilDateYearMonth + untilDateDay,
+			inDate: ISOinDate,
+			untilDate: ISOuntilDate,
 			color
-		})
+		});
 	}
 
 	return(
-		<Form
+		<form
 			noValidate
-			autoComplete='off'
+			autoComplete="off"
 			onSubmit={handleSubmit(submit)}
 		>
-			{/* <DevTool control={control} /> */}
-
-			<Form.Group controlId='information'>
-				<Form.Label>Informação:</Form.Label>
-				<Autocomplete
-					options={props.informations}
-					getOptionLabel={ option => option.nickname }
-					renderInput={ params =>
-						<TextField
-							{...params} label='Selecione um item'
-							inputRef={register({ required: true })}
-							name='information' variant='outlined'
-							error={!!errors.information}
-						/>
-					}
-					onChange={ (event, value) =>
-						setInformation(value.nickname)
-					}
-					style={{ width: 360 }}
-					autoComplete
-					autoSelect
-				/>
-			</Form.Group>
-
-			<Form.Group controlId='location'>
-				<Form.Label>Localização:</Form.Label>
-				<VirtualizedSelect
-					name='location'
-					register={register({ required: true })}
-					data={props.locations}
-					onChange={ (event, value) => setLocation(value) }
-					error={!!errors.location}
-				/>
-			</Form.Group>
-
-			<Form.Group controlId='granularity'>
-				<Form.Label>Granularidade:</Form.Label>
-				<Autocomplete
-					options={props.granularities}
-					getOptionLabel={ option => option.granularidade }
-					renderInput={ params =>
-						<TextField
-							{...params} label='Selecione um item'
-							inputRef={register({ required: true })}
-							name='granularity' variant='outlined'
-							error={!!errors.granularity}
-						/>
-					}
-					onChange={ (event, value) =>
-						setGranularity(value.granularity)
-					}
-					style={{ width: 360 }}
-					autoComplete
-					autoSelect
-				/>
-			</Form.Group>
-
-			<Form.Group as={Row} controlId='inDate'>
-				<Form.Label column md={3}>Início:</Form.Label>
-				<MuiPickersUtilsProvider utils={DateFnsUtils} locale={ptBR}>
-					<Col md={3}>
-						<Controller as={
-							<KeyboardDatePicker
-								minDate='1990/01/01'
-								maxDate='2022/01/01'
-								format='dd'
-								disableToolbar
-								label='Dia'
-								value={inDate.day}
-								error={!!errors.inDateDay}
-								invalidDateMessage='(dd)'
-								style={{width: 80}}
-							/>}
-							name='inDateDay'
-							control={control}
-							rules={{ required: true }}
-							onChange={ ([selected]) => {
-								setInDate({ ...inDate, day: selected });
-								return selected;
-							}}
-						/>
-					</Col>
-					<Col md={5}>
-						<Controller as={
-							<KeyboardDatePicker
-								minDate='1990/01/01'
-								maxDate='2022/01/01'
-								openTo='year'
-								views={['year', 'month']}
-								format='MM/yyyy'
-								label='Mês e ano'
-								value={inDate.yearMonth}
-								error={!!errors.inDateYearMonth}
-								invalidDateMessage='(MM/yyyy)'
-								style={{width: 140}}
-							/>}
-							name='inDateYearMonth'
-							control={control}
-							rules={{ required: true }}
-							onChange={ ([selected]) => {
-								setInDate({ ...inDate, yearMonth: selected });
-								return selected;
-							}}
-						/>
-					</Col>
-				</MuiPickersUtilsProvider>
-			</Form.Group>
-
-			<Form.Group as={Row} controlId='untilDate'>
-				<Form.Label column md={3}>Final:</Form.Label>
-				<MuiPickersUtilsProvider utils={DateFnsUtils} locale={ptBR}>
-					<Col md={3}>
-						<Controller as={
-							<KeyboardDatePicker
-								minDate='1990/01/01'
-								maxDate='2022/01/01'
-								format='dd'
-								disableToolbar
-								label='Dia'
-								value={inDate.day}
-								error={!!errors.untilDateDay}
-								invalidDateMessage='(dd)'
-								style={{width: 80}}
-							/>}
-							name='untilDateDay'
-							control={control}
-							rules={{ required: true }}
-							onChange={ ([selected]) => {
-								setUntilDate({ ...untilDate, day: selected });
-								return selected;
-							}}
-						/>
-					</Col>
-					<Col md={5}>
-						<Controller as={
-							<KeyboardDatePicker
-								minDate='1990/01/01'
-								maxDate='2022/01/01'
-								openTo='year'
-								views={['year', 'month']}
-								format='MM/yyyy'
-								label='Mês e ano'
-								value={inDate.yearMonth}
-								error={!!errors.untilDateYearMonth}
-								invalidDateMessage='(MM/yyyy)'
-								style={{width: 140}}
-							/>}
-							name='untilDateYearMonth'
-							control={control}
-							rules={{ required: true }}
-							onChange={ ([selected]) => {
-								setUntilDate({ ...untilDate, yearMonth: selected });
-								return selected;
-							}}
-						/>
-					</Col>
-				</MuiPickersUtilsProvider>
-			</Form.Group>
-
-			<Form.Group as={Row} controlId='color'>
-				<Form.Label column md={3}>Cor:</Form.Label>
-				<Col md={9}>
-					<GithubPicker
-						id='color'
-						name='color'
-						triangle='hide'
-						width='212px'
-						color={color}
-						onChangeComplete={ color => setColor(color.hex) }
+			<Controller
+				name='information'
+				control={control}
+				rules={{ required: true }}
+				render={ controllerProps => (
+					<Autocomplete
+						onChange={ (_, selected) => {
+							setInformation(selected?.nickname);
+							controllerProps.onChange(selected?.nickname);
+						}}
+						options={props.informations}
+						getOptionLabel={ option => option.nickname }
+          				getOptionSelected={(option, value) => _.isEqual(option, value)}
+						renderInput={ params =>
+							<TextField
+								{...params} label='Selecione a informação'
+								error={!!errors.information}
+								margin='normal'
+							/>
+						}
+						noOptionsText='Nenhuma opção encontrada'
+						fullWidth
+						autoComplete
 					/>
-				</Col>
-			</Form.Group>
+				)}
+			/>
 
-			<Form.Group as={Row}>
-				<Col md={{ span: 6, offset: 4 }}>
-					<Button type='submit' variant='secondary'>Gerar gráfico</Button>
-				</Col>
-			</Form.Group>
-		</Form>
+			<Controller
+				name='location'
+				control={control}
+				rules={{ required: true }}
+				render={ controllerProps => (
+					<VirtualizedSelect
+						onChange={ (_, selected) => {
+							setLocation(selected);
+							controllerProps.onChange(selected);
+						}}
+						data={props.locations}
+						error={!!errors.location}
+					/>
+				)}
+			/>
+
+			<Controller
+				name='granularity'
+				control={control}
+				rules={{ required: true }}
+				render={ controllerProps => (
+					<Autocomplete
+						onChange={ (_, selected) => {
+							setGranularity(selected?.granularity);
+							controllerProps.onChange(selected?.granularity);
+						}}
+						options={props.granularities}
+						getOptionLabel={ option => option.granularidade }
+          				getOptionSelected={(option, value) => _.isEqual(option, value)}
+						renderInput={ params =>
+							<TextField
+								{...params} label='Selecione a granularidade'
+								error={!!errors.granularity}
+								margin='normal'
+							/>
+						}
+						noOptionsText='Nenhuma opção encontrada'
+						fullWidth
+						autoComplete
+					/>
+				)}
+			/>
+
+			<MuiPickersUtilsProvider utils={DateFnsUtils} locale={ptBR}>
+				<div id="date-wrapper">
+					<Controller
+						name='inDate'
+						control={control}
+						rules={{
+							required: 'Campo necessário.',
+							validate: date => {
+								if(String(date) === 'Invalid Date') return 'Data inválida, formato: 01/12/2015.';
+								else if(date?.getTime() < new Date('1999-01-01')) return 'Data menor que o limite: 01/01/1999.';
+								else if(date?.getTime() > new Date('2022-01-01')) return 'Data maior que o limite: 01/01/2022.';
+							}
+						}}
+						defaultValue={null}
+						render={ props => (
+							<KeyboardDatePicker
+								onChange={ date => {
+									setInDate(date);
+									props.onChange(date);
+								}}
+								value={props.value}
+								error={!!errors.inDate}
+								helperText={errors.inDate?.message}
+								format='dd/MM/yyyy'
+								views={['year', 'month', 'date']}
+								openTo='year'
+								minDate={new Date('1999-01-01')}
+								maxDate={new Date('2022-01-01')}
+								label='Data inicial'
+								clearable
+								disableFuture
+								cancelLabel='Cancelar'
+								clearLabel='Limpar'
+								okLabel='Confirmar'
+							/>
+						)}
+					/>
+				</div>
+				<div id="date-wrapper">
+					<Controller
+						name='untilDate'
+						control={control}
+						rules={{
+							required: 'Campo necessário.',
+							validate: date => {
+								if(String(date) === 'Invalid Date') return 'Data inválida, formato: 01/12/2015.';
+								else if(date?.getTime() < new Date('1999-01-01')) return 'Data menor que o limite: 01/01/1999.';
+								else if(date?.getTime() > new Date('2022-01-01')) return 'Data maior que o limite: 01/01/2022.';
+							}
+						}}
+						defaultValue={null}
+						render={props => (
+							<KeyboardDatePicker
+								onChange={date => {
+									setUntilDate(date);
+									props.onChange(date);
+								}}
+								value={props.value}
+								error={!!errors.untilDate}
+								helperText={errors.untilDate?.message}
+								format='dd/MM/yyyy'
+								views={['year', 'month', 'date']}
+								openTo='year'
+								minDate={new Date('1999-01-01')}
+								maxDate={new Date('2022-01-01')}
+								label='Data final'
+								clearable
+								disableFuture
+								cancelLabel='Cancelar'
+								clearLabel='Limpar'
+								okLabel='Confirmar'
+							/>
+						)}
+					/>
+				</div>
+			</MuiPickersUtilsProvider>
+
+			<div id="color-wrapper">
+				<GithubPicker
+					id='color'
+					name='color'
+					triangle='hide'
+					width='212px'
+					color={color}
+					onChangeComplete={ color => setColor(color?.hex) }
+				/>
+			</div>
+
+			<Button type='submit'
+				fullWidth
+				variant='contained'
+				color='secondary'
+			>Gerar gráfico</Button>
+		</form>
 	);
 }

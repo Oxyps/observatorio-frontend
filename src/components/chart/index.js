@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 
-import MyChart from '../MyChart';
+import MyChart from './MyChart';
 
-// import './styles.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import './styles.css';
 
 export default function ChartComponent({ chartData }) {
 	const [key, setKey] = useState('line-chart');
@@ -21,6 +23,7 @@ export default function ChartComponent({ chartData }) {
 
 	return(
 		<Tabs id='chart-tabs'
+			classes='tabs'
 			activeKey={key}
 			onSelect={ k => setKey(k) }
 			unmountOnExit

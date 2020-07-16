@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { trackPromise } from 'react-promise-tracker';
+
+import api from '../../services/api';
 import FormComponent from '../../components/form';
 import ChartComponent from '../../components/chart';
 
-import api from '../../services/api';
-
-// import './styles.css';
+import './styles.css';
 
 export default function ChartPage() {
 	const [informations, setInformations] = useState([]);
@@ -53,7 +53,7 @@ export default function ChartPage() {
 			labels: response.data.until_dates,
 			datasets: [
 				{
-					label: params.locationName+' '+params.locationType,
+					label: params.locationName +' '+ params.locationType +' '+ params.locationState,
 					data: response.data.datasets[0].data
 				}
 			]
@@ -67,28 +67,21 @@ export default function ChartPage() {
 	}, []);
 
 	return(
-		<div className="container-fluid d-flex flex-column align-items-center justify-items-center">
-			<div className="d-flex flex-row container-fluid">
-				<div className="container-fluid col-4">
-					<h1>Formulário</h1>
-				</div>
-				<div className="container-fluid col-4">
-					<h1>Gráfico</h1>
-				</div>
-			</div>
-			<div className="d-flex flex-row">
-				<div className="container col-sm-4">
-					<FormComponent
-						onSubmit={handleGetChartData}
-						informations={informations}
-						locations={locations}
-						granularities={granularities}
-					/>
-				</div>
-				<div className="container d-flex flex-column col-sm-8">
-					<ChartComponent chartData={chartData} />
-				</div>
-			</div>
-		</div>
+		<>
+			<aside>
+				<strong>Formulário</strong>
+				<FormComponent
+					onSubmit={handleGetChartData}
+					informations={informations}
+					locations={locations}
+					granularities={granularities}
+				/>
+			</aside>
+			<hr className="solid"/>
+			<main>
+				<strong>Gráfico</strong>
+				<ChartComponent chartData={chartData} />
+			</main>
+		</>
 	);
 }
