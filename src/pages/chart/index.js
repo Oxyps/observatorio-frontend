@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { trackPromise } from 'react-promise-tracker';
 
-import { Button } from '@material-ui/core';
-import SaveIcon from '@material-ui/icons/Save';
-
 import 'blueimp-canvas-to-blob/js/canvas-to-blob.min';
 import { saveAs } from 'file-saver';
 
@@ -78,11 +75,14 @@ export default function ChartPage() {
 	}
 
 	const handleExportJSON = () => {
-		console.info("export JSON");
+		console.info('export JSON');
+
+		const blob = new Blob([JSON.stringify(chartData)], { type: 'application/json' });
+		saveAs(blob, 'chart.json');
 	};
 
 	const handleExportCSV = () => {
-		console.info("export CSV");
+		console.info('export CSV');
 	};
 
 	useEffect(() => {

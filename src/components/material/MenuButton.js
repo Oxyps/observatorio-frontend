@@ -1,13 +1,16 @@
-import React from "react";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Grow from "@material-ui/core/Grow";
-import Paper from "@material-ui/core/Paper";
-import Popper from "@material-ui/core/Popper";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
+import React from 'react';
+
+import SaveIcon from '@material-ui/icons/Save';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import Popper from '@material-ui/core/Popper';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
 
 export default function MenuButton({
   handleExportImage,
@@ -30,21 +33,22 @@ export default function MenuButton({
   };
 
   return (
-    <Grid container direction="column" alignItems="center">
+    <Grid container direction='column' alignItems='center'>
       <Grid item xs={12}>
         <Button
-          variant="contained"
-          color="primary"
-          size="large"
+          variant='contained'
+          color='primary'
+          size='large'
           ref={anchorRef}
-          aria-label="split button"
-          aria-controls={open ? "split-button-menu" : undefined}
-          aria-expanded={open ? "true" : undefined}
-          aria-haspopup="menu"
+          aria-label='split button'
+          aria-controls={open ? 'split-button-menu' : undefined}
+          aria-expanded={open ? 'true' : undefined}
+          aria-haspopup='menu'
           onClick={handleToggle}
         >
-          <span>Export</span>
-          <ArrowDropDownIcon />
+			<SaveIcon style={{marginRight: '10px'}} />
+			<span>Export</span>
+			<ArrowDropDownIcon style={{marginLeft: '10px'}} />
         </Button>
         <Popper
           open={open}
@@ -58,12 +62,12 @@ export default function MenuButton({
               {...TransitionProps}
               style={{
                 transformOrigin:
-                  placement === "top" ? "center bottom" : "center top"
+                  placement === 'top' ? 'center bottom' : 'center top'
               }}
             >
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList id="split-button-menu">
+                  <MenuList id='split-button-menu'>
                     <MenuItem key={0} onClick={handleExportImage}>
                       <span>Imagem</span>
                     </MenuItem>

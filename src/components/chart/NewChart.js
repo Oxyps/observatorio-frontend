@@ -8,11 +8,11 @@ export default function NewChart({ chartData, type, options }) {
 	// export right image
 	function handleAfterRender(chart, options) {
 		const ctx = chart.chart.ctx;
-		// ctx.save();
+		ctx.save();
 		ctx.globalCompositeOperation = 'destination-over';
 		ctx.fillStyle = 'white';
 		ctx.fillRect(0, 0, chart.chart.width, chart.chart.height);
-		// ctx.restore();
+		ctx.restore();
 	}
 
 	useEffect(() => {
