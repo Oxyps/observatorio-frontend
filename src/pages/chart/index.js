@@ -4,6 +4,7 @@ import { trackPromise } from 'react-promise-tracker';
 
 import 'blueimp-canvas-to-blob/js/canvas-to-blob.min';
 import { saveAs } from 'file-saver';
+import { ExportToCsv } from 'export-to-csv';
 
 import api from '../../services/api';
 import FormComponent from '../../components/form';
@@ -74,15 +75,34 @@ export default function ChartPage() {
 		});
 	}
 
-	const handleExportJSON = () => {
+	const handleExportJson = () => {
 		console.info('export JSON');
 
 		const blob = new Blob([JSON.stringify(chartData)], { type: 'application/json' });
 		saveAs(blob, 'chart.json');
 	};
 
-	const handleExportCSV = () => {
-		console.info('export CSV');
+	const handleExportCsv = () => {
+		let chartCsvData = chartData.labels.map( date => ({ date }));
+		for (let i = 0; i < chartCsvData.length; i++) {
+			chartCsvData[i]['data'] = chartData.datasets[0].data[i];
+		}
+
+		const options = {
+			fieldSeparator: ',',
+			quoteStrings: '"',
+			decimalSeparator: '.',
+			showLabels: true,
+			showTitle: true,
+			title: chartData.title,
+			useTextFile: false,
+			useBom: true,
+			useKeysAsHeaders: true,
+			// headers: ['date', 'data']
+		}
+
+		const csvExporter = new ExportToCsv(options);
+		csvExporter.generateCsv(chartCsvData);
 	};
 
 	useEffect(() => {
@@ -106,8 +126,8 @@ export default function ChartPage() {
 				<ChartComponent chartData={chartData} />
 				<MenuButton
 					handleExportImage={handleExportImage}
-					handleExportJSON={handleExportJSON}
-					handleExportCSV={handleExportCSV}
+					handleExportJson={handleExportJson}
+					handleExportCsv={handleExportCsv}
 				/>
 			</main>
 		</>

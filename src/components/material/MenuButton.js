@@ -14,8 +14,8 @@ import MenuList from '@material-ui/core/MenuList';
 
 export default function MenuButton({
   handleExportImage,
-  handleExportJSON,
-  handleExportCSV
+  handleExportJson,
+  handleExportCsv
 }) {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -71,10 +71,10 @@ export default function MenuButton({
                     <MenuItem key={0} onClick={handleExportImage}>
                       <span>Imagem</span>
                     </MenuItem>
-                    <MenuItem key={1} onClick={handleExportJSON}>
+                    <MenuItem key={1} onClick={handleExportJson}>
                       <span>JSON</span>
                     </MenuItem>
-                    <MenuItem key={2} onClick={handleExportCSV}>
+                    <MenuItem key={2} onClick={handleExportCsv}>
                       <span>CSV</span>
                     </MenuItem>
                     <MenuItem
