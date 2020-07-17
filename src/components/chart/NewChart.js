@@ -2,9 +2,10 @@ import React, { useEffect, createRef } from 'react';
 
 import Chart from 'chart.js';
 
-export default function MyChart({ chartData, type, options }) {
+export default function NewChart({ chartData, type, options }) {
 	const canvasRef = createRef(null);
 
+	// export right image
 	function handleAfterRender(chart, options) {
 		var ctx = chart.chart.ctx;
 		// ctx.save();

@@ -28,13 +28,13 @@ main {
 	height: 100vh;
 	width: 1100px;
 	min-width: 850px;
-	margin: 0 auto;
+	margin-right: 5px;
 
-	display: flex;
+	/* display: flex;
 	flex-direction: column;
 
 	align-items: center;
-	justify-content: center;
+	justify-content: center; */
 }
 #save-chart {
 	display: flex;
