@@ -11,6 +11,7 @@ import { saveAs } from 'file-saver';
 import api from '../../services/api';
 import FormComponent from '../../components/form';
 import ChartComponent from '../../components/chart';
+import MenuButton from '../../components/material/MenuButton';
 
 import './styles.css';
 
@@ -68,13 +69,21 @@ export default function ChartPage() {
 		setChartData(chart);
 	}
 
-	function handleSaveChart() {
+	function handleExportImage() {
 		const canvasElement = document.getElementsByTagName('canvas')[0];
 
 		canvasElement.toBlob( blob => {
 			saveAs(blob, 'chart.png');
 		});
 	}
+
+	const handleExportJSON = () => {
+		console.info("export JSON");
+	};
+
+	const handleExportCSV = () => {
+		console.info("export CSV");
+	};
 
 	useEffect(() => {
 		loadFormData();
@@ -95,11 +104,11 @@ export default function ChartPage() {
 			<main>
 				{/* <strong>Gráfico</strong> */}
 				<ChartComponent chartData={chartData} />
-				<Button id='save-chart'
-					variant='contained'
-					startIcon={<SaveIcon />}
-					onClick={handleSaveChart}
-				>Salvar gráfico</Button>
+				<MenuButton
+					handleExportImage={handleExportImage}
+					handleExportJSON={handleExportJSON}
+					handleExportCSV={handleExportCSV}
+				/>
 			</main>
 		</>
 	);

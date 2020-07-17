@@ -7,7 +7,7 @@ export default function NewChart({ chartData, type, options }) {
 
 	// export right image
 	function handleAfterRender(chart, options) {
-		var ctx = chart.chart.ctx;
+		const ctx = chart.chart.ctx;
 		// ctx.save();
 		ctx.globalCompositeOperation = 'destination-over';
 		ctx.fillStyle = 'white';

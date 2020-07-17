@@ -2,7 +2,7 @@ import React from 'react';
 import { ThemeProvider } from '@material-ui/core/styles';
 
 import Routes from './routes';
-import createMuiTheme from './components/theme';
+import createMuiTheme from './components/material/theme';
 
 import './global.css';
 
