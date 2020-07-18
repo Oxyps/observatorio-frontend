@@ -13,12 +13,10 @@ An API was created to serve the backend. This project consumes [observatorio-bac
 ## Technologies 🧰
   - [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
   - [React.js](https://reactjs.org/docs/getting-started.html)
-  - [Axios](https://github.com/axios/axios)
   - [Chart.js](https://www.chartjs.org/docs/latest/)
-  - [React Chart.js 2](https://github.com/jerairrest/react-chartjs-2)
-  - [Bootstrap](https://getbootstrap.com/docs/4.5/getting-started/introduction/)
-  - [React-Bootstrap](https://react-bootstrap.github.io)
-  - [React-Datepicker](https://reactdatepicker.com)
+  - [Material UI](https://material-ui.com/getting-started/installation/)
+  - [React Hook Form](https://react-hook-form.com/get-started/)
+  - and some more..
 
 ## First Steps 🧭
 
