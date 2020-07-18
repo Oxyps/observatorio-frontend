@@ -19,16 +19,6 @@ import './styles.css';
 export default function ChartComponent({ chartData }) {
 	const [tabKey, setTabKey] = useState(0);
 
-	const options = {
-		scales: {
-			yAxes: [{
-				ticks: {
-					min: 0,
-				}
-			}]
-		},
-	};
-
 	const getTabProps = (index) => {
 		return {
 			id: `scrollable-force-tab-${index}`,
@@ -82,14 +72,12 @@ export default function ChartComponent({ chartData }) {
 				<NewChart
 					chartData={chartData}
 					type='line'
-					options={options}
 				/>
 			</TabPanel>
 			<TabPanel tabKey={tabKey} tabIndex={1}>
 				<NewChart
 					chartData={chartData}
 					type='bar'
-					options={options}
 				/>
 			</TabPanel>
 			<TabPanel tabKey={tabKey} tabIndex={2}>

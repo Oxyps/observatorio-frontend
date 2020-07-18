@@ -21,11 +21,7 @@ export default function ChartPage() {
 	const [chartData, setChartData] = useState({
 		title: '',
 		color: '',
-		labels: [],
-		datasets: [{
-			label: '',
-			data: []
-		}]
+		dataset: []
 	})
 
 	async function loadFormData() {
@@ -48,23 +44,15 @@ export default function ChartPage() {
 	}
 
 	async function handleGetChartData(params) {
-		const response = await trackPromise(
+		const { data } = await trackPromise(
 			api.get(`/chart/search-data/?information_nickname=${params.information}&location_name=${params.locationName}&location_type=${params.locationType}&location_state=${params.locationState}&granularity=${params.granularity}&in_date_gt=${params.inDate}&until_date_lte=${params.untilDate}`)
 		);
 
-		const chart = {
-			title: response.data.datasets[0].label,
+		setChartData({
+			title: data.title,
 			color: params.color,
-			labels: response.data.until_dates,
-			datasets: [
-				{
-					label: params.locationName +' '+ params.locationType +' '+ params.locationState,
-					data: response.data.datasets[0].data
-				}
-			]
-		}
-
-		setChartData(chart);
+			dataset: data.dataset
+		});
 	}
 
 	function handleExportImage() {
@@ -76,18 +64,11 @@ export default function ChartPage() {
 	}
 
 	const handleExportJson = () => {
-		console.info('export JSON');
-
 		const blob = new Blob([JSON.stringify(chartData)], { type: 'application/json' });
 		saveAs(blob, 'chart.json');
 	};
 
 	const handleExportCsv = () => {
-		let chartCsvData = chartData.labels.map( date => ({ date }));
-		for (let i = 0; i < chartCsvData.length; i++) {
-			chartCsvData[i]['data'] = chartData.datasets[0].data[i];
-		}
-
 		const options = {
 			fieldSeparator: ',',
 			quoteStrings: '"',
@@ -96,13 +77,14 @@ export default function ChartPage() {
 			showTitle: true,
 			title: chartData.title,
 			useTextFile: false,
+			filename: 'chart',
 			useBom: true,
 			useKeysAsHeaders: true,
 			// headers: ['date', 'data']
 		}
 
 		const csvExporter = new ExportToCsv(options);
-		csvExporter.generateCsv(chartCsvData);
+		csvExporter.generateCsv(chartData.dataset);
 	};
 
 	useEffect(() => {

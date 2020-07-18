@@ -2,8 +2,19 @@ import React, { useEffect, createRef } from 'react';
 
 import Chart from 'chart.js';
 
-export default function NewChart({ chartData, type, options }) {
+export default function NewChart({ chartData, type }) {
 	const canvasRef = createRef(null);
+
+	const options = {
+		scales: {
+			yAxes: [{
+				ticks: {
+					min: 0,
+				}
+			}]
+		},
+		tooltip: false
+	};
 
 	// export right image
 	function handleAfterRender(chart, options) {
@@ -21,20 +32,22 @@ export default function NewChart({ chartData, type, options }) {
 				plugins: [{
 					afterRender: handleAfterRender
 				}],
-				type: type,
-				options: options,
+				type,
+				options,
 				data: {
-					labels: chartData.labels,
-					datasets: [{
-						label: chartData.datasets[0].label,
-						data: chartData.datasets[0].data,
-						borderColor: chartData.color || '#000',
-						// backgroundColor: chartData.color,
-						fill: false,
-						pointRadius: 3,
-						borderWidth: 1,
-						lineTension: 0,
-					}]
+					labels: chartData.dataset.map(obj => obj.date),
+					datasets: [
+						{
+							label: chartData.title,
+							data: chartData.dataset.map(obj => obj.data),
+							borderColor: chartData.color || '#000',
+							// backgroundColor: chartData.color,
+							fill: false,
+							pointRadius: 3,
+							borderWidth: 1,
+							lineTension: 0,
+						}
+					]
 				}
 			}
 		);
