@@ -13,7 +13,8 @@ export default function NewChart({ chartData, type }) {
 				}
 			}]
 		},
-		tooltip: false
+		tooltips: false,
+		events: []
 	};
 
 	// export right image
