@@ -2,6 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { trackPromise } from 'react-promise-tracker';
 
+import { IconButton } from '@material-ui/core';
+import { Collapse } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
+import CloseIcon from '@material-ui/icons/Close';
+
 import 'blueimp-canvas-to-blob/js/canvas-to-blob.min';
 import { saveAs } from 'file-saver';
 import { ExportToCsv } from 'export-to-csv';
@@ -14,6 +19,7 @@ import MenuButton from '../../components/material/MenuButton';
 import './styles.css';
 
 export default function ChartPage() {
+	const [error, setError] = useState(false);
 	const [informations, setInformations] = useState([]);
 	const [locations, setLocations] = useState([]);
 	const [granularities, setGranularities] = useState([]);
@@ -25,34 +31,43 @@ export default function ChartPage() {
 	})
 
 	async function loadFormData() {
-		await trackPromise(
-			axios
-				.all([
-					api.get('/chart/information'),
-					api.get('/chart/location'),
-					api.get('/chart/granularity')
-				])
-				.then(axios.spread( (infRes, locRes, granRes) => {
-					setInformations(infRes.data);
-					setLocations(locRes.data);
-					setGranularities(granRes.data.data);
-				}))
-				.catch(errors => {
-					// console.log(errors);
-				})
+		await trackPromise(axios
+			.all([
+				api.get('/chart/information'),
+				api.get('/chart/location'),
+				api.get('/chart/granularity')
+			])
+			.then(axios.spread( (infRes, locRes, granRes) => {
+				setInformations(infRes.data);
+				setLocations(locRes.data);
+				setGranularities(granRes.data.data);
+			}))
+			.catch(errors => {
+				// console.log(errors);
+			})
 		);
 	}
 
 	async function handleGetChartData(params) {
-		const { data } = await trackPromise(
-			api.get(`/chart/search-data/?information_nickname=${params.information}&location_name=${params.locationName}&location_type=${params.locationType}&location_state=${params.locationState}&granularity=${params.granularity}&in_date_gt=${params.inDate}&until_date_lte=${params.untilDate}`)
+		await trackPromise(api
+			.get(`/chart/search-data/?information_nickname=${params.information}&location_name=${params.locationName}&location_type=${params.locationType}&location_state=${params.locationState}&granularity=${params.granularity}&in_date_gt=${params.inDate}&until_date_lte=${params.untilDate}`)
+			.then(response => {
+				setChartData({
+					title: response.data.title,
+					color: params.color,
+					dataset: response.data.dataset
+				});
+				setError(false);
+			})
+			.catch(errors => {
+				setChartData({
+					title: '',
+					color: '',
+					dataset: []
+				})
+				setError(true);
+			})
 		);
-
-		setChartData({
-			title: data.title,
-			color: params.color,
-			dataset: data.dataset
-		});
 	}
 
 	function handleExportImage() {
@@ -93,25 +108,47 @@ export default function ChartPage() {
 
 	return(
 		<>
-			<aside>
-				{/* <strong>Formulário</strong> */}
-				<FormComponent
-					onSubmit={handleGetChartData}
-					informations={informations}
-					locations={locations}
-					granularities={granularities}
-				/>
-			</aside>
-			<hr className="solid"/>
-			<main>
-				{/* <strong>Gráfico</strong> */}
-				<ChartComponent chartData={chartData} />
-				<MenuButton
-					handleExportImage={handleExportImage}
-					handleExportJson={handleExportJson}
-					handleExportCsv={handleExportCsv}
-				/>
-			</main>
+			<Collapse in={error} id='alert'>
+				<Alert
+					severity='error'
+					action={
+						<IconButton
+							aria-label='close'
+							color='inherit'
+							size='small'
+							onClick={() => {
+								setError(false);
+							}}
+						>
+							<CloseIcon fontSize='inherit' />
+						</IconButton>
+					}
+				>
+					Dados não encontrados, assegure-se de estar inserindo o período e a granularidade corretamente.
+				</Alert>
+			</Collapse>
+
+			<div id="page">
+				<aside>
+					<strong>Formulário</strong>
+					<FormComponent
+						onSubmit={handleGetChartData}
+						informations={informations}
+						locations={locations}
+						granularities={granularities}
+					/>
+				</aside>
+				{/* <hr /> */}
+				<main>
+					{/* <strong>Gráfico</strong> */}
+					<ChartComponent chartData={chartData} />
+					<MenuButton
+						handleExportImage={handleExportImage}
+						handleExportJson={handleExportJson}
+						handleExportCsv={handleExportCsv}
+					/>
+				</main>
+			</div>
 		</>
 	);
 }

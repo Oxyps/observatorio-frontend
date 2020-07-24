@@ -39,7 +39,7 @@ export default function NewChart({ chartData, type }) {
 					labels: chartData.dataset.map(obj => obj.date),
 					datasets: [
 						{
-							label: chartData.title,
+							label: chartData.title || '',
 							data: chartData.dataset.map(obj => obj.data),
 							borderColor: chartData.color || '#000',
 							// backgroundColor: chartData.color,
