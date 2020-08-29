@@ -37,3 +37,13 @@ An API was created to serve the backend. This project consumes [observatorio-bac
 ``` browser
 @ localhost:3000/chart/
 ```
+
+
+## TO-DO 💪
+
+- Add form header in black color - OECT&IG;
+- Add form subheader in gray color - Observatório Econômico de Ciência Tecnologia e Inovação de Guarapuava;
+- Remove unnecessary chart icons from tab bar;
+- Add color picker label - Selecione a cor desejada;
+- Add charts fill;
+- Increase chart-line thickness.
