@@ -6,10 +6,10 @@ import Tab from "@material-ui/core/Tab";
 
 import TimelineIcon from "@material-ui/icons/Timeline";
 import BarChartIcon from "@material-ui/icons/BarChart";
-import PieChartIcon from "@material-ui/icons/PieChart";
-import BubbleChartIcon from "@material-ui/icons/BubbleChart";
-import MultilineChartIcon from "@material-ui/icons/MultilineChart";
-import DonutSmallIcon from "@material-ui/icons/DonutSmall";
+// import PieChartIcon from "@material-ui/icons/PieChart";
+// import BubbleChartIcon from "@material-ui/icons/BubbleChart";
+// import MultilineChartIcon from "@material-ui/icons/MultilineChart";
+// import DonutSmallIcon from "@material-ui/icons/DonutSmall";
 
 import TabPanel from './TabPanel';
 import NewChart from './NewChart';
@@ -31,8 +31,8 @@ export default function ChartComponent({ chartData }) {
 	};
 
 	return(
-		<>
-			<AppBar position='static' color='default'>
+		<div id='tab-bar'>
+			<AppBar className='tab-bar' position='static' color='default'>
 				<Tabs
 					value={tabKey}
 					onChange={handleChangeTab}
@@ -50,11 +50,11 @@ export default function ChartComponent({ chartData }) {
 						icon={<BarChartIcon />}
 						{...getTabProps(1)}
 					/>
-					<Tab label='Bolha' disabled
+					{/* <Tab label='Bolha' disabled
 						icon={<BubbleChartIcon />}
 						{...getTabProps(2)}
 					/>
-					<Tab label='Pizza' disabled
+					<Tab label='Pizza'
 						icon={<PieChartIcon />}
 						{...getTabProps(4)}
 					/>
@@ -65,7 +65,7 @@ export default function ChartComponent({ chartData }) {
 					<Tab label='Multilinhas' disabled
 						icon={<MultilineChartIcon />}
 						{...getTabProps(5)}
-					/>
+					/> */}
 				</Tabs>
 			</AppBar>
 			<TabPanel tabKey={tabKey} tabIndex={0}>
@@ -80,18 +80,21 @@ export default function ChartComponent({ chartData }) {
 					type='bar'
 				/>
 			</TabPanel>
-			<TabPanel tabKey={tabKey} tabIndex={2}>
+			{/* <TabPanel tabKey={tabKey} tabIndex={2}>
 				Bolhas
 			</TabPanel>
 			<TabPanel tabKey={tabKey} tabIndex={3}>
-				Donut
+				<NewChart
+					chartData={chartData}
+					type='pie'
+				/>
 			</TabPanel>
 			<TabPanel tabKey={tabKey} tabIndex={4}>
-				Pizza
+				Donut
 			</TabPanel>
 			<TabPanel tabKey={tabKey} tabIndex={5}>
 				Multilinhas
-			</TabPanel>
-		</>
+			</TabPanel> */}
+		</div>
 	);
 }

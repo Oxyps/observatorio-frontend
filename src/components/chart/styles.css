@@ -1,5 +1,3 @@
-.tabs {
-	background-color: black;
-	align-self: left;
-	justify-self: left;
+#tab-bar {
+	padding-right: 10px;
 }

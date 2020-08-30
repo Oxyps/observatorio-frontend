@@ -1,29 +1,48 @@
 form {
 	width: 370px;
-	padding: 0 5px 10px 5px;
-	border-radius: 3px;
-	background: #f5f5f5;
-
-	box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
-
-}
-
-#date-wrapper {
-	width: 300px;
+	padding: 15px 10px 10px 15px;
 
 	display: flex;
 	flex-direction: column;
 	align-content: center;
 	justify-content: center;
 
-	margin-top: 15px;
-	margin-bottom: 25px;
+	border-radius: 3px;
+	background: #f5f5f5;
+
+	box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+
+}
+#select-wrapper {
+	width: 330px;
+	height: 50px;
+	margin-bottom: 15px;
+}
+#date-wrapper {
+	width: 340px;
+	height: 50px;
+	margin-top: 25px;
+
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	justify-content: center;
+}
+#color-wrapper {
+	width: 360px;
+	margin-top: 20px;
+	padding-right: 25px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
-#color-wrapper {
-	margin-top: 25px;
-	display: flex;
-	justify-content: center;
+#color-wrapper label {
+	margin-right: 20px;
+
+    color: rgba(0, 0, 0, 0.54);
+    line-height: 1;
 }
 
 form button[type=submit] {

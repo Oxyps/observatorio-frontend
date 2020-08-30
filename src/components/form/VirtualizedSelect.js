@@ -121,9 +121,12 @@ export default function VirtualizedSelect(props) {
 	function getLocations() {
 		let newArray = [];
 		Object.keys(props.data).map(group =>
-			props.data[group].map(location =>
-				newArray.push(location.name+' '+group+' '+location.state)
-			)
+			props.data[group].map(location => {
+				let location_string = [location.name, group]
+				if(location.state) location_string[2] = location.state
+				
+				newArray.push(location_string.join(' - '))
+			})
 		);
 
 		return newArray;

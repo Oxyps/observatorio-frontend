@@ -47,7 +47,7 @@ export default function MenuButton({
           onClick={handleToggle}
         >
 			<SaveIcon style={{marginRight: '10px'}} />
-			<span>Export</span>
+			<span>Exportar</span>
 			<ArrowDropDownIcon style={{marginLeft: '10px'}} />
         </Button>
         <Popper
@@ -77,13 +77,13 @@ export default function MenuButton({
                     <MenuItem key={2} onClick={handleExportCsv}>
                       <span>CSV</span>
                     </MenuItem>
-                    <MenuItem
+                    {/* <MenuItem
                       key={3}
                       disabled
                       // onClick={handleExportXML}
                     >
                       <span>XML</span>
-                    </MenuItem>
+                    </MenuItem> */}
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

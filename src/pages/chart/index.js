@@ -130,7 +130,13 @@ export default function ChartPage() {
 
 			<div id="page">
 				<aside>
-					<strong>Formulário</strong>
+					<h1 id="title">
+						O E C T &amp; I G
+					</h1>
+					<h2 id="subtitle">
+						Observatório Econômico de Ciência, Tecnologia e Inovação de Guarapuava
+					</h2>
+
 					<FormComponent
 						onSubmit={handleGetChartData}
 						informations={informations}
@@ -138,9 +144,8 @@ export default function ChartPage() {
 						granularities={granularities}
 					/>
 				</aside>
-				{/* <hr /> */}
+				<hr />
 				<main>
-					{/* <strong>Gráfico</strong> */}
 					<ChartComponent chartData={chartData} />
 					<MenuButton
 						handleExportImage={handleExportImage}

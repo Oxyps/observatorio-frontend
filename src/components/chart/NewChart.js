@@ -41,11 +41,12 @@ export default function NewChart({ chartData, type }) {
 						{
 							label: chartData.title || '',
 							data: chartData.dataset.map(obj => obj.data),
-							borderColor: chartData.color || '#000',
-							// backgroundColor: chartData.color,
-							fill: false,
+							borderColor: chartData.color || '#363533',
+							backgroundColor: chartData.color || 'rgba(61, 61, 61, 0.5)',
+							pointBackgroundColor: chartData.color || 'rgba(61, 61, 61, 0.5)',
+							// fill: false,
 							pointRadius: 3,
-							borderWidth: 1,
+							borderWidth: 2,
 							lineTension: 0,
 						}
 					]
@@ -54,9 +55,9 @@ export default function NewChart({ chartData, type }) {
 		);
 	});
 
-	// useEffect(()=>{
-	// 	console.log(chartData);
-	// }, [chartData]);
+	useEffect(()=>{
+		console.log(chartData.color);
+	}, [chartData]);
 
 	return <canvas height="400" width="850" ref={canvasRef} />
 }

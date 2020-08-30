@@ -35,7 +35,10 @@ export default function FormComponent(props) {
 		//yyyy-mm-dd format dates
 		const ISOinDate = inDate.toISOString().slice(0, 10);
 		const ISOuntilDate = untilDate.toISOString().slice(0, 10);
-		const [ locationName, locationType, locationState ] = location.split(' ')
+		const [ locationName, locationType, locationState ] = location.split(' - ');
+
+		let rgbColor = undefined;
+		if(color) rgbColor = 'rgba('+color.rgb.r+','+color.rgb.g+','+color.rgb.b+',0.5)';
 
 		await props.onSubmit({
 			information,
@@ -45,7 +48,7 @@ export default function FormComponent(props) {
 			granularity,
 			inDate: ISOinDate,
 			untilDate: ISOuntilDate,
-			color
+			color: rgbColor
 		});
 	}
 
@@ -55,75 +58,81 @@ export default function FormComponent(props) {
 			autoComplete="off"
 			onSubmit={handleSubmit(submit)}
 		>
-			<Controller
-				name='information'
-				control={control}
-				rules={{ required: true }}
-				render={ controllerProps => (
-					<Autocomplete
-						onChange={ (_, selected) => {
-							setInformation(selected?.nickname);
-							controllerProps.onChange(selected?.nickname);
-						}}
-						options={props.informations}
-						getOptionLabel={ option => option.nickname }
-          				getOptionSelected={(option, value) => _.isEqual(option, value)}
-						renderInput={ params =>
-							<TextField
-								{...params} label='Selecione a informação'
-								error={!!errors.information}
-								margin='normal'
-							/>
-						}
-						noOptionsText='Nenhuma opção encontrada'
-						fullWidth
-						autoComplete
-					/>
-				)}
-			/>
+			<div id="select-wrapper">
+				<Controller
+					name='information'
+					control={control}
+					rules={{ required: true }}
+					render={ controllerProps => (
+						<Autocomplete
+							onChange={ (_, selected) => {
+								setInformation(selected?.nickname);
+								controllerProps.onChange(selected?.nickname);
+							}}
+							options={props.informations}
+							getOptionLabel={ option => option.nickname }
+							getOptionSelected={(option, value) => _.isEqual(option, value)}
+							renderInput={ params =>
+								<TextField
+									{...params} label='Selecione a informação'
+									error={!!errors.information}
+									margin='normal'
+								/>
+							}
+							noOptionsText='Nenhuma opção encontrada'
+							fullWidth
+							autoComplete
+						/>
+					)}
+				/>
+			</div>
 
-			<Controller
-				name='location'
-				control={control}
-				rules={{ required: true }}
-				render={ controllerProps => (
-					<VirtualizedSelect
-						onChange={ (_, selected) => {
-							setLocation(selected);
-							controllerProps.onChange(selected);
-						}}
-						data={props.locations}
-						error={!!errors.location}
-					/>
-				)}
-			/>
+			<div id="select-wrapper">
+				<Controller
+					name='location'
+					control={control}
+					rules={{ required: true }}
+					render={ controllerProps => (
+						<VirtualizedSelect
+							onChange={ (_, selected) => {
+								setLocation(selected);
+								controllerProps.onChange(selected);
+							}}
+							data={props.locations}
+							error={!!errors.location}
+						/>
+					)}
+				/>
+			</div>
 
-			<Controller
-				name='granularity'
-				control={control}
-				rules={{ required: true }}
-				render={ controllerProps => (
-					<Autocomplete
-						onChange={ (_, selected) => {
-							setGranularity(selected?.granularity);
-							controllerProps.onChange(selected?.granularity);
-						}}
-						options={props.granularities}
-						getOptionLabel={ option => option.granularidade }
-          				getOptionSelected={(option, value) => _.isEqual(option, value)}
-						renderInput={ params =>
-							<TextField
-								{...params} label='Selecione a granularidade'
-								error={!!errors.granularity}
-								margin='normal'
-							/>
-						}
-						noOptionsText='Nenhuma opção encontrada'
-						fullWidth
-						autoComplete
-					/>
-				)}
-			/>
+			<div id="select-wrapper">
+				<Controller
+					name='granularity'
+					control={control}
+					rules={{ required: true }}
+					render={ controllerProps => (
+						<Autocomplete
+							onChange={ (_, selected) => {
+								setGranularity(selected?.granularity);
+								controllerProps.onChange(selected?.granularity);
+							}}
+							options={props.granularities}
+							getOptionLabel={ option => option.granularidade }
+							getOptionSelected={(option, value) => _.isEqual(option, value)}
+							renderInput={ params =>
+								<TextField
+									{...params} label='Selecione a granularidade'
+									error={!!errors.granularity}
+									margin='normal'
+								/>
+							}
+							noOptionsText='Nenhuma opção encontrada'
+							fullWidth
+							autoComplete
+						/>
+					)}
+				/>
+			</div>
 
 			<MuiPickersUtilsProvider utils={DateFnsUtils} locale={ptBR}>
 				<div id="date-wrapper">
@@ -203,13 +212,14 @@ export default function FormComponent(props) {
 			</MuiPickersUtilsProvider>
 
 			<div id="color-wrapper">
+				<label>Cor desejada:</label>
 				<GithubPicker
 					id='color'
 					name='color'
 					triangle='hide'
 					width='212px'
 					color={color}
-					onChangeComplete={ color => setColor(color?.hex) }
+					onChangeComplete={ color => setColor(color)}
 				/>
 			</div>
 
