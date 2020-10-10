@@ -124,8 +124,8 @@ export default function VirtualizedSelect(props) {
 			props.data[group].map(location => {
 				let location_string = [location.name, group]
 				if(location.state) location_string[2] = location.state
-				
-				newArray.push(location_string.join(' - '))
+
+				return newArray.push(location_string.join(' - '))
 			})
 		);
 

@@ -134,7 +134,7 @@ export default function ChartPage() {
 						O E C T &amp; I G
 					</h1>
 					<h2 id="subtitle">
-						Observatório Econômico de Ciência, Tecnologia e Inovação de Guarapuava
+						Observatório Econômico de Ciência Tecnologia e Inovação de Guarapuava
 					</h2>
 
 					<FormComponent

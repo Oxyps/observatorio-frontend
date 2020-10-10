@@ -142,9 +142,10 @@ export default function FormComponent(props) {
 						rules={{
 							required: 'Campo necessário.',
 							validate: date => {
-								if(String(date) === 'Invalid Date') return 'Data inválida, formato: 01/12/2015.';
-								else if(date?.getTime() < new Date('1999-01-01')) return 'Data menor que o limite: 01/01/1999.';
-								else if(date?.getTime() > new Date('2022-01-01')) return 'Data maior que o limite: 01/01/2022.';
+								if(String(date) === 'Invalid Date') return 'Data inválida, formato dd/mm/yyyy.';
+								else if(date?.getTime() < new Date('1999-01-01')) return 'A data deve ser maior que o limite mínimo (01/01/1999).';
+								else if(date?.getTime() > new Date('2022-01-01')) return 'A data deve ser menor que o limite máximo (01/01/2022).';
+								else if(date?.getTime() >= new Date(untilDate)) return `A data inicial deve ser menor que a data final.`
 							}
 						}}
 						defaultValue={null}
@@ -179,9 +180,10 @@ export default function FormComponent(props) {
 						rules={{
 							required: 'Campo necessário.',
 							validate: date => {
-								if(String(date) === 'Invalid Date') return 'Data inválida, formato: 01/12/2015.';
+								if(String(date) === 'Invalid Date') return 'Data inválida, formato dd/mm/yyyy.';
 								else if(date?.getTime() < new Date('1999-01-01')) return 'Data menor que o limite: 01/01/1999.';
 								else if(date?.getTime() > new Date('2022-01-01')) return 'Data maior que o limite: 01/01/2022.';
+								else if(date?.getTime() <= new Date(inDate)) return `A data final deve ser maior que a data inicial.`
 							}
 						}}
 						defaultValue={null}
