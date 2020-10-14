@@ -10,6 +10,9 @@ export default function NewChart({ chartData, type }) {
 			yAxes: [{
 				ticks: {
 					min: 0,
+					callback: (value, index, values) => {
+						return 'R$ ' + value;
+					}
 				}
 			}]
 		},
